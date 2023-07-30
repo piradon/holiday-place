@@ -9,9 +9,11 @@ $bp: (
 );
 
 .wrapper {
-  background-color: silver;
+  //background-image: linear-gradient(135deg, #abdcff 10%, #000000 100%);
+  //background-image: radial-gradient( circle 897px at 9% 80.3%,  rgba(55,60,245,1) 0%, rgba(234,161,15,0.90) 100.2% );
   padding: 2rem;
-
+  background-color: #4800B3;
+  color: white;
 }
 
 .container {
@@ -21,33 +23,35 @@ $bp: (
   width: 100%;
   gap: 12px;
   height: auto;
-  
 }
 
 .box {
-  display:flex;
+  display: flex;
   flex-direction: column;
   width: 200px;
   height: 100px;
-  background-color: red;
   min-width: 200px;
-  //padding-right: calc(8px + 1.5625vw);
+  background: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(4px);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  padding: calc(1vw);
 }
 
-// @media (max-width: mobile) {
-//   .content{
-//      margin-left: 20px;
-//   }
-// }
+.city-name {
+  display: flex;
+  justify-content: center;
+  font-weight: 600;
+}
 
-// @media (max-width: tablet) {
-//   .content{
-//      margin-left: 10px;
-//   }
-// }
+.weather-info-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
 
-// @media (min-width: tablet) {
-//   .content{
-//      margin-left: 10px;
-//   }
-// }
+.weather-info {
+  display: flex;
+  flex-direction: column;
+}
