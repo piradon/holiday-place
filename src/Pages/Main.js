@@ -4,7 +4,8 @@ import {
   fortyPolandCities,
 } from "../constants/countryCodes";
 import { fetchWeather } from "../api/weatherApi";
-import "./Main.scss";
+import { ReactComponent as Hot } from "../icons/hot.svg";
+import "./Main.css";
 
 const regionNames = new Intl.DisplayNames(["en"], { type: "region" });
 
@@ -59,11 +60,19 @@ function Main() {
         {weather.list.map((x, i) => {
           return (
             <div key={x.id} className="box">
-              <p>{x.name}</p>
-              {/* <p>{countryName[i]}</p> */}
-              <p>{x.main.temp}</p>
-              <p>{x.main.humidity}</p>
-              <p>{x.wind.speed}</p>
+              <div className="city-name">
+                <p>{x.name}</p>
+              </div>
+              <div className="weather-info-container">
+                <div>
+                  <Hot />
+                </div>
+                <div className="weather-info">
+                  <p>{x.main.temp} °C</p>
+                  <p>{x.main.humidity} %</p>
+                  <p>{x.wind.speed} m/s</p>
+                </div>
+              </div>
             </div>
           );
         })}
