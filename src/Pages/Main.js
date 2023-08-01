@@ -4,7 +4,7 @@ import {
   fortyPolandCities,
 } from "../constants/countryCodes";
 import { fetchWeather } from "../api/weatherApi";
-import { ReactComponent as Hot } from "../icons/hot.svg";
+import { ReactComponent as Hot } from "../icons/clear-day.svg";
 import "./Main.css";
 
 const regionNames = new Intl.DisplayNames(["en"], { type: "region" });
@@ -64,13 +64,13 @@ function Main() {
                 <p>{x.name}</p>
               </div>
               <div className="weather-info-container">
-                <div>
+                {/* <div style={{ width: 48, height: 48 }}>
                   <Hot />
-                </div>
+                </div> */}
                 <div className="weather-info">
-                  <p>{x.main.temp} °C</p>
-                  <p>{x.main.humidity} %</p>
+                  <p style={{fontSize:18}}>{x.main.temp} °C</p>
                   <p>{x.wind.speed} m/s</p>
+                  <p>{x.main.humidity} %</p>
                 </div>
               </div>
             </div>
