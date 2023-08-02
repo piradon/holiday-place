@@ -4,7 +4,13 @@ import {
   fortyPolandCities,
 } from "../constants/countryCodes";
 import { fetchWeather } from "../api/weatherApi";
-import { ReactComponent as Hot } from "../icons/clear-day.svg";
+import { ReactComponent as ClearSky } from "../icons/clear-sky.svg";
+import { ReactComponent as Rain } from "../icons/rain.svg";
+import { ReactComponent as Thunderstorm } from "../icons/thunderstorm.svg";
+import { ReactComponent as Drizzle } from "../icons/drizzle.svg";
+import { ReactComponent as Snow } from "../icons/snow.svg";
+import { ReactComponent as Cloud } from "../icons/cloud.svg";
+
 import "./Main.css";
 
 const regionNames = new Intl.DisplayNames(["en"], { type: "region" });
@@ -29,7 +35,7 @@ function Main() {
       firstWeather.cnt = 40;
       firstWeather.list = mergedCities;
 
-      console.log(firstWeather);
+      //console.log(firstWeather);
       const countryName = [];
       for (let index = 0; index < firstWeather.list.length; index++) {
         countryName.push(regionNames.of(firstWeather.list[index].sys.country));
@@ -41,22 +47,12 @@ function Main() {
 
     getWeather();
 
-    console.log(regionNames.of("US")); // "United States"
     return () => {};
   }, []);
 
   if (weather && countryName) {
-    console.log(weather);
-    //console.log(weather.coord)
     return (
       <div className="container">
-        {/* <div className="box">
-          {" "}
-          {weather.name} 
-          {weather.sys.country} {weather.main?.temp}{" "}
-          {weather.main.humidity} {weather.wind.speed}{" "}
-        </div> */}
-
         {weather.list.map((x, i) => {
           return (
             <div key={x.id} className="box">
@@ -64,11 +60,24 @@ function Main() {
                 <p>{x.name}</p>
               </div>
               <div className="weather-info-container">
-                {/* <div style={{ width: 48, height: 48 }}>
-                  <Hot />
-                </div> */}
                 <div className="weather-info">
-                  <p style={{fontSize:18}}>{x.main.temp} °C</p>
+                  {x.weather[0].icon === "01n" ? (
+                    <ClearSky />
+                  ) : x.weather[0].icon === "10n" ? (
+                    <Rain />
+                  ) : x.weather[0].icon === "11n" ? (
+                    <Thunderstorm />
+                  ) : x.weather[0].icon === "09n" ? (
+                    <Drizzle />
+                  ) : x.weather[0].icon === "13n" ? (
+                    <Snow />
+                  ) : x.weather[0].icon === "03n" ||
+                    x.weather[0].icon === "04n" ? (
+                    <Cloud />
+                  ) : (
+                    <></>
+                  )}
+                  <p style={{ fontSize: 18 }}>{x.main.temp} °C</p>
                   <p>{x.wind.speed} m/s</p>
                   <p>{x.main.humidity} %</p>
                 </div>
