@@ -1,64 +1,25 @@
-.wrapperr {
-  width: 100vw;
-  height: 100vh;
+.carousel {
+  overflow: hidden;
+  width: 600px;
+  height: 300px;
+  margin: 0 auto;
+  background-color: #f5f5f5;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+}
+
+.carousel-slides {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transition: transform 1s;
+}
+
+.carousel p {
+  flex: 0 0 33.33%;
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
-  background: #daf7a6;
-  overflow: hidden;
-}
-
-.frame {
-  border: 10px solid #ff8e00;
-  width: 500px;
-  overflow: hidden;
-}
-
-.box-container {
-  display: flex;
-}
-
-.boxx {
-  box-sizing: border-box;
-  border: 5px solid #fff;
-  background: #00e7ff;
-  width: 250px;
-  height: 250px;
-  flex-shrink: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.button-container {
-  display: flex;
-}
-
-.button {
-  background: #666;
-  color: #fff;
-  width: 50px;
-  text-align: center;
-  padding: 10px 20px;
-  margin: 10px;
-  user-select: none;
-  cursor: pointer;
-}
-
-.button-2-container {
-  display: flex;
-}
-
-.button-2 {
-  width: 15px;
-  height: 15px;
-  border-radius: 15px;
-  background: #e0e0e0;
-  margin: 6px;
-  cursor: pointer;
-}
-
-.active {
-  background: #999;
+  font-size: 2em;
+  font-weight: bold;
 }
