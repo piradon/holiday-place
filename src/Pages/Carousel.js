@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { countryList } from "../constants/countries";
+import { countryList, listFlag } from "../constants/countries";
 import "./Carousel.css";
 
 const Carousel = () => {
@@ -9,7 +9,10 @@ const Carousel = () => {
   const [isMounted, setIsMounted] = useState(true);
 
   useEffect(() => {
-    const countries = countryList.sort((a, b) => 0.5 - Math.random());
+    // const countries = countryList.sort((a, b) => 0.5 - Math.random());
+    // setCountries(countries);
+
+    const countries = listFlag.sort((a, b) => 0.5 - Math.random());
     setCountries(countries);
 
     setBingo(randomNumber(8, 24));
@@ -59,7 +62,7 @@ const Carousel = () => {
       }}
     >
       <div className="carousel">
-        <div
+        {/* <div
           className="heart"
           style={{
             // height: "300px",
@@ -72,7 +75,7 @@ const Carousel = () => {
             right: 0,
             textAlign: "center",
           }}
-        />
+        /> */}
         {shouldRenderChild && (
           <div
             className={"carousel-slides"}
@@ -88,15 +91,32 @@ const Carousel = () => {
             //   transitionTimingFunction: "cubic-bezier(0,0,0.33,1)",
             // }}
           >
-            {countryList.map((slide, i) => (
+            {/* {countryList.map((slide, i) => (
               <p key={i} className={index === i ? "active" : ""}>
                 {slide}
               </p>
+            ))} */}
+
+            {listFlag.map((x, i) => (
+              <div style={{ padding: "20px" }}>
+                <img
+                  src={`https://hatscripts.github.io/circle-flags/flags/${x.cd}.svg`}
+                  width="200"
+                  alt="flag"
+                ></img>
+                <div className="flag-caption">{x.n}</div>
+              </div>
+              // <p key={i} className={index === i ? "active" : ""}>
+              //   {x}
+              // </p>
             ))}
           </div>
         )}
       </div>
-      <button style={{ width: "200px" }} onClick={handleToggleClicked}>
+      <button
+        style={{ width: "200px", marginTop: "200px" }}
+        onClick={handleToggleClicked}
+      >
         Click me!
       </button>
     </div>
