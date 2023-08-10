@@ -114,7 +114,7 @@ const Carousel = () => {
           </div>
         )}
       </div>
-      <p>{lol}</p>
+      {/* <p>{lol}</p> */}
       <button
         style={{ width: "200px", marginTop: "125px" }}
         onClick={handleToggleClicked}
