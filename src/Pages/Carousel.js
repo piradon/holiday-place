@@ -144,7 +144,6 @@ function useDelayUnmount(isMounted, delayTime) {
     } else if (!isMounted && shouldRender) {
       timeoutId = setTimeout(() => setShouldRender(true), delayTime);
     }
-    console.log(shouldRender);
     return () => clearTimeout(timeoutId);
   }, [isMounted, delayTime, shouldRender]);
   return shouldRender;

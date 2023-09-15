@@ -1,0 +1,30 @@
+.city-container {
+  height: 100%;
+  background-color: #160e1d;
+  font-size: 20px;
+}
+.city-info-wrapper {
+  background-color: #160e1d;
+  padding: 3em;
+  height: 100%;
+  overflow: auto;
+  border-radius: 8px;
+}
+
+.city-title {
+}
+
+.city-info::first-letter {
+  font-size: 30px;
+  padding-left: 2em;
+}
+
+.city-info {
+  color: #fff;
+  font-weight: 500;
+  border: 1px solid violet;
+  padding: 2em;
+  line-height: 1.5;
+  text-align: justify;
+  letter-spacing: 0.33px;
+}
