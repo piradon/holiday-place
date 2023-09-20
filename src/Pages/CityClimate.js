@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import {
   twentyPolandCities,
   fortyPolandCities,
 } from "../constants/countryCodes";
+
 import { fetchWeather } from "../api/weatherApi";
 import { ReactComponent as ClearSky } from "../icons/clear-sky.svg";
 import { ReactComponent as Rain } from "../icons/rain.svg";
@@ -11,13 +13,15 @@ import { ReactComponent as Drizzle } from "../icons/drizzle.svg";
 import { ReactComponent as Snow } from "../icons/snow.svg";
 import { ReactComponent as Cloud } from "../icons/cloud.svg";
 
-import "./Main.css";
+import "./CityClimate.css";
 
 const regionNames = new Intl.DisplayNames(["en"], { type: "region" });
 
-function Main() {
+function CityClimate() {
   const [weather, setWeather] = useState(null);
   const [countryName, setCountryName] = useState(null);
+  const dispatch = useDispatch();
+  const temperature = useSelector((state) => state.weather.temperature);
 
   useEffect(() => {
     const getWeather = async () => {
@@ -29,7 +33,6 @@ function Main() {
       //firstWeather.list.push(secondWeather.list);
       secondWeather = JSON.parse(secondWeather);
 
-      console.log(firstWeather.list);
       console.log(secondWeather.list);
       const mergedCities = [...firstWeather.list, ...secondWeather.list];
       firstWeather.cnt = 40;
@@ -50,7 +53,8 @@ function Main() {
     return () => {};
   }, []);
 
-  if (weather && countryName) {
+  if (weather && countryName && temperature) {
+    console.log(temperature);
     return (
       <div className="container">
         {weather.list.map((x, i) => {
@@ -92,4 +96,4 @@ function Main() {
   return <div>Loader</div>;
 }
 
-export default Main;
+export default CityClimate;
