@@ -1,27 +1,31 @@
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import wiki from "wikijs";
-import { fetchWikiData } from "../../api/wikipediaApi";
 import "./CityInfo.css";
 
 const CityInfo = () => {
   const [info, setInfo] = useState();
   const [image, setImage] = useState();
+  const [test, setTest] = useState();
+
+  const drawnCountry = useSelector((state) => state.wiki.drawnCountry);
+  const wikiContent = useSelector((state) => state.wiki.wikiContent);
+  const wikiImage = useSelector((state) => state.wiki.wikiImage);
 
   useEffect(() => {
-    wiki()
-      .page("Poland")
-      .then((page) => page.summary())
-      .then(setInfo);
+    // wiki()
+    //   .page(drawnCountry.n)
+    //   .then((page) => page.summary())
+    //   .then(setInfo);
 
     wiki()
-      .page("Cracov")
+      .page(drawnCountry.n)
       .then((page) => page.mainImage())
       .then(setImage);
-
     // wiki()
-    //   .page("Cracov")
-    //   .then((page) => page.images())
-    //   .then(setImage); // Bruce Wayne
+    //   .page("Poland")
+    //   .then((page) => page.content())
+    //   .then(setTest);
 
     // wiki()
     //   .page("Warsaw")
@@ -39,25 +43,16 @@ const CityInfo = () => {
     //     console.error(error);
     //   });
 
-    // wiki()
-    // .page("London")
-    // .then((page) => page.content())
-    // .then(console.log);
-
-    return () => {
-      // this now gets called when the component unmounts
-    };
+    return () => {};
   }, []);
 
-  if (info && image) {
+  if (wikiContent && wikiImage) {
     return (
       <div className="city-container">
         <div className="city-info-wrapper">
-          {/* <div className="city-title">Warsaw</div> */}
-
           <div className="city-info">
             <img
-              src={image}
+              src={wikiImage}
               alt="Girl in a jacket"
               style={{
                 width: "40%",
@@ -66,7 +61,7 @@ const CityInfo = () => {
                 padding: "2em",
               }}
             />
-            <div>{info}</div>
+            <div>{wikiContent}</div>
           </div>
         </div>
       </div>

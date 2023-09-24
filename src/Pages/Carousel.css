@@ -4,6 +4,7 @@
   height: 350px;
   margin: 0 auto;
   background-color: hsl(0, 0%, 0%);
+  position: relative;
 }
 
 .carousel-slides {
@@ -90,4 +91,27 @@
 }
 .my-button:active {
   transform: scale(0.95);
+}
+
+.draw-indicator {
+  position: absolute;
+  height: 70%;
+  top: 0px;
+  left: 50%;
+  border-left: 1px solid rgb(255 255 255 / 34%);
+  border-right: 1px solid rgb(255 255 255 / 34%);
+}
+
+.unmounted-style {
+  margin-left: -5758px;
+  animation: slide-in 6s cubic-bezier(0, 0.11, 0.33, 1) 0s;
+}
+
+@keyframes slide-in {
+  from {
+    margin-left: 0;
+  }
+  to {
+    margin-left: -5758px;
+  }
 }
