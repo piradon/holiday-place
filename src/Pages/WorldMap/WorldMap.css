@@ -1,0 +1,25 @@
+/* 
+  
+  svg {
+    display: inline-block;
+    vertical-align: middle;
+  }
+  
+
+  
+  .App {
+    font-family: sans-serif;
+    text-align: center;
+  }
+   */
+
+/* path {
+  fill: #ffffff;
+} */
+
+.wrapper-svg {
+  display: flex;
+  max-width: 1200px;
+  margin: auto;
+  display: flex;
+}
