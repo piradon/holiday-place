@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import Carousel from "./Carousel/Carousel";
 import CityInfo from "./CityInfo/CityInfo";
 import WorldMap from "./WorldMap/WorldMap";
+import UsMap from "./WorldMap/Usmap";
 
 function Main() {
   const drawnCountry = useSelector((state) => state.wiki.drawnCountry);

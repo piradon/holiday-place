@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
-import * as d3 from 'd3';
-import { feature, mesh } from 'topojson-client';
-import albertusatopos from './albertusatopos.json';
+import React, { useEffect } from "react";
+import * as d3 from "d3";
+import { feature, mesh } from "topojson-client";
+import albertusatopos from "./albertusatopos.json";
 
 function UsMap() {
   useEffect(() => {
@@ -36,18 +36,26 @@ function UsMap() {
       .attr("fill", "none")
       .attr("stroke", "white")
       .attr("stroke-linejoin", "round")
-      .attr("d", path(mesh(albertusatopos, albertusatopos.objects.states, (a, b) => a !== b)));
+      .attr(
+        "d",
+        path(
+          mesh(albertusatopos, albertusatopos.objects.states, (a, b) => a !== b)
+        )
+      );
 
     const zoom = d3.zoom().scaleExtent([1, 8]).on("zoom", zoomed);
     svg.call(zoom);
 
     function reset() {
       states.transition().style("fill", null);
-      svg.transition().duration(750).call(
-        zoom.transform,
-        d3.zoomIdentity,
-        d3.zoomTransform(svg.node()).invert([width / 2, height / 2])
-      );
+      svg
+        .transition()
+        .duration(750)
+        .call(
+          zoom.transform,
+          d3.zoomIdentity,
+          d3.zoomTransform(svg.node()).invert([width / 2, height / 2])
+        );
     }
 
     function clicked(event, d) {
@@ -55,14 +63,19 @@ function UsMap() {
       event.stopPropagation();
       states.transition().style("fill", null);
       d3.select(this).transition().style("fill", "red");
-      svg.transition().duration(750).call(
-        zoom.transform,
-        d3.zoomIdentity
-          .translate(width / 2, height / 2)
-          .scale(Math.min(8, 0.9 / Math.max((x1 - x0) / width, (y1 - y0) / height)))
-          .translate(-(x0 + x1) / 2, -(y0 + y1) / 2),
-        d3.pointer(event, svg.node())
-      );
+      svg
+        .transition()
+        .duration(750)
+        .call(
+          zoom.transform,
+          d3.zoomIdentity
+            .translate(width / 2, height / 2)
+            .scale(
+              Math.min(8, 0.9 / Math.max((x1 - x0) / width, (y1 - y0) / height))
+            )
+            .translate(-(x0 + x1) / 2, -(y0 + y1) / 2),
+          d3.pointer(event, svg.node())
+        );
     }
 
     function zoomed(event) {
@@ -72,7 +85,7 @@ function UsMap() {
     }
   }, []);
 
-  return <div id="map" style={{ width: '100%' }} />;
+  return <div id="map" style={{ width: "100%" }} />;
 }
 
 export default UsMap;

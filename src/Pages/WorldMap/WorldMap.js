@@ -7,8 +7,9 @@ import { shorte } from "./shorte.js";
 function WorldMap() {
   useEffect(() => {
     console.log(shorte);
-    const width = 975;
-    const height = 610;
+    console.log(window.innerWidth)
+    const width = window.innerWidth;
+    const height = window.innerHeight-20;
     const svg = d3
       .select("#map")
       .append("svg")
@@ -49,7 +50,7 @@ function WorldMap() {
       .attr("cy", coordinates[1])
       .attr("r", 5)
       .style("fill", "red");
-    const zoom = d3.zoom().scaleExtent([1, 8]).on("zoom", zoomed);
+    const zoom = d3.zoom().scaleExtent([1, 20]).on("zoom", zoomed);
     svg.call(zoom);
 
     function reset() {
@@ -94,9 +95,16 @@ function WorldMap() {
 
   return (
     <div
-      id="map"
-      style={{ width: "100%", height: "100%", border: "1px solid red" }}
-    />
+      style={{
+        display: "flex",
+        alignItems: "center",
+        height: "100%",
+        width: "100%",
+        justifyContent: "center",
+      }}
+    >
+      <div id="map" style={{ border: "1px solid red" }} />
+    </div>
   );
 }
 
