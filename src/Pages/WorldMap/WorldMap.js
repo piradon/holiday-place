@@ -17,8 +17,9 @@ function WorldMap() {
       .attr("height", height)
       .attr("style", "max-width: 100%; height: auto;")
       .on("click", reset);
+    let projection = d3.geoMercator().fitSize([width, height], shorte);
 
-    const path = d3.geoPath(d3.geoMercator().fitSize([width, height], shorte));
+    const path = d3.geoPath(projection);
 
     const g = svg.append("g");
     const countries = g
@@ -40,6 +41,14 @@ function WorldMap() {
         path(mesh(worldtopo, worldtopo.objects.countries, (a, b) => a !== b))
       );
 
+    const coordinates = projection([0, 0]);
+
+    const marker = svg
+      .append("circle")
+      .attr("cx", coordinates[0])
+      .attr("cy", coordinates[1])
+      .attr("r", 5)
+      .style("fill", "red");
     const zoom = d3.zoom().scaleExtent([1, 8]).on("zoom", zoomed);
     svg.call(zoom);
 
@@ -79,6 +88,7 @@ function WorldMap() {
       const { transform } = event;
       g.attr("transform", transform);
       g.attr("stroke-width", 1 / transform.k);
+      marker.attr("transform", transform);
     }
   }, []);
 
