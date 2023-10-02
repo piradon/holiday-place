@@ -89,47 +89,53 @@ function WorldMap() {
       marker.attr("transform", transform);
     }
 
+    const markerDataSet = [];
+
     const gerCoord = shorte.features.filter(
       (x) => x.properties.name === "Germany"
     )[0];
     var gBounds = d3.geoBounds(gerCoord);
 
     function drawVertexSet(pointSet) {
-      g.append("circle")
-        //.data(pointSet)
+      g.selectAll("circle")
+        .data(pointSet)
         .join("circle")
-        .attr("cx", projection(pointSet)[0])
-        .attr("cy", projection(pointSet)[1])
-        .attr("r", 1)
-        .attr(
-          "fill",
-          d3.polygonContains(gerCoord.geometry.coordinates[0], pointSet)
-            ? "blue"
-            : "red"
-        )
+        .attr("cx", ([x, y]) => x)
+        .attr("cy", ([x, y]) => y)
+        .attr("r", 0.5)
+        .attr("fill", "blue")
         // start the circle as invisible
         .attr("opacity", 0)
         .transition()
         // // how long it takes each circle to fade in
-        .duration(100)
+        .duration(1000)
         // // how long to wait before transition the circle
-        .delay((d, i) => i * 100)
+        .delay((d, i) => i * 500)
         // // make the circle visible
         .attr("opacity", 1);
     }
 
-    console.log(gBounds);
     const lowX = Math.floor(gBounds[0][0]);
     const highX = Math.floor(gBounds[1][0]);
     const lowY = Math.floor(gBounds[0][1]);
     const highY = Math.floor(gBounds[1][1]);
 
-    console.log(lowX);
     for (let index = 0; index < 120; index++) {
       let constx = getRandomInRange(lowX, highX);
       let consty = getRandomInRange(lowY, highY);
 
-      drawVertexSet([constx, consty]);
+      if (
+        d3.polygonContains(gerCoord.geometry.coordinates[0], [constx, consty])
+      ) {
+        const projCoords = projection([constx, consty]);
+
+        markerDataSet.push(projCoords);
+      }
+
+      if (index === 19) {
+        console.log(markerDataSet);
+        drawVertexSet(markerDataSet);
+      }
     }
 
     function getRandomInRange(from, to, fixed) {
