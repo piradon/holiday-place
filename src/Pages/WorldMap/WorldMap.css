@@ -23,3 +23,25 @@
   margin: auto;
   display: flex;
 }
+.bg {
+	margin: 20px auto;
+	border: 1px solid #aaa;
+	background-color: #dcb;
+}
+.marker {
+	fill: #31558d;
+	stroke: #31558d;
+	fill-opacity: .75;
+	transition: all .2s ease-in-out;
+	/* &:hover {
+		fill: #8d3155;
+		fill-opacity: 1;
+		cursor: pointer;
+	} */
+}
+.graticule {
+	fill: none;
+	stroke: #ff0000;
+	stroke-opacity: .25;
+	stroke-width: 1px;
+}

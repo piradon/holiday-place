@@ -20,8 +20,6 @@ const Carousel = () => {
     //   .then((page) => page.info())
     //   .then(console.log);
 
-    wiki().chain().geosearch(52.52437, 13.41053).summary(console);
-
     const countries = listFlag.sort((a, b) => 0.5 - Math.random()).slice(0, 29);
     setCountries(countries);
 

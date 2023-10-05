@@ -7,12 +7,15 @@
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
     "axios": "^0.19.2",
+    "d3": "^7.8.5",
+    "d3-geo-projection": "^4.0.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "3.4.1",
-    "wikijs": "^6.4.1",
     "react-redux": "^7.2.2",
-    "redux": "^4.0.5"
+    "react-scripts": "3.4.1",
+    "react-simple-maps": "^3.0.0",
+    "redux": "^4.0.5",
+    "wikijs": "^6.4.1"
   },
   "scripts": {
     "start": "react-scripts start",
