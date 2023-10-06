@@ -22,9 +22,36 @@ export function setWikiContent(payload) {
 }
 
 export function setWikiImage(payload) {
-  console.log(payload)
   return {
     type: types.SET_WIKI_IMAGE,
+    payload,
+  };
+}
+
+export function setDrawnCity(payload) {
+  return {
+    type: types.SET_DRAWN_CITY,
+    payload,
+  };
+}
+
+export function setDrawnCityCoords(payload) {
+  return {
+    type: types.SET_DRAWN_CITY_COORDS,
+    payload,
+  };
+}
+
+export function setWikiCountryInfo(payload) {
+  return {
+    type: types.SET_WIKI_COUNTRY_INFO,
+    payload,
+  };
+}
+
+export function setWikiCityInfo(payload) {
+  return {
+    type: types.SET_WIKI_CITY_INFO,
     payload,
   };
 }

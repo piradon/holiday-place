@@ -1,10 +1,25 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import Nominatim from "nominatim-geocoder";
+import { useSelector } from "react-redux";
+import {
+  setDrawnCity,
+  setDrawnCityCoords,
+  setWikiContent,
+  setWikiImage,
+} from "../../redux/actions/wikiActions";
 import * as d3 from "d3";
+import wiki from "wikijs";
 import { feature, mesh } from "topojson-client";
 import { shorte } from "./shorte.js";
+import "./WorldMap.css";
+
+const geocoder = new Nominatim();
 
 function WorldMap() {
+  //  const drawnCityCoords = useSelector((state) => state.wiki.drawnCityCoords);
+  const drawnCity = useSelector((state) => state.wiki.drawnCity);
   useEffect(() => {
+    let dCity = null;
     const width = window.innerWidth;
     const height = window.innerHeight - 20;
     const svg = d3
@@ -66,7 +81,6 @@ function WorldMap() {
     function clicked(event, d) {
       const [[x0, y0], [x1, y1]] = path.bounds(d);
       event.stopPropagation();
-      console.log(this);
       countries.transition().style("fill", null);
       d3.select(this).transition().style("fill", "red");
       svg
@@ -100,7 +114,6 @@ function WorldMap() {
 
     function drawVertexSet(pointSet) {
       var transitions = pointSet.length;
-      console.log(pointSet);
       g.selectAll("circle")
         .data(pointSet)
         .join("circle")
@@ -126,18 +139,14 @@ function WorldMap() {
         .attr("opacity", 1)
 
         .on("end", function () {
-          console.log(transitions);
-
           if (--transitions === 0) {
-            console.log("FIRE");
-            console.log(lastPoint);
             drawLastPoint(lastPoint);
           }
         });
     }
 
     function drawLastPoint(pointSet) {
-      console.log(pointSet);
+      console.log("START DRAWING LAST POINT");
       g.append("circle")
         .data(pointSet)
         .join("circle")
@@ -157,6 +166,17 @@ function WorldMap() {
         .delay((d, i) => i * 500)
         // // make the circle visible
         .attr("opacity", 1);
+      g.append("text")
+        .text(dCity)
+        .attr("x", pointSet[0][0])
+        .attr("y", pointSet[0][1] - 2)
+        .attr("text-anchor", "middle")
+        .attr("class", "country-label")
+        .attr("opacity", 0)
+        .transition()
+        .duration(1000)
+        .delay(500)
+        .attr("opacity", 1);
     }
 
     const lowX = Math.floor(gBounds[0][0]);
@@ -171,7 +191,6 @@ function WorldMap() {
       let lold = countries._groups[0].filter((x) => {
         return x.__data__.properties.name === "Germany";
       });
-      console.log(lold)
       d3.select(lold[0]).transition().style("fill", "#CC5A71");
       svg
         .transition()
@@ -192,7 +211,6 @@ function WorldMap() {
     )[0];
     zoomOnLoad(dd);
 
-
     for (let index = 0; index < 40; index++) {
       let constx = getRandomInRange(lowX, highX);
       let consty = getRandomInRange(lowY, highY);
@@ -201,18 +219,30 @@ function WorldMap() {
         d3.polygonContains(gerCoord.geometry.coordinates[0], [constx, consty])
       ) {
         if (index < 20) {
-          console.log("DSDSD");
-
           const projCoords = projection([constx, consty]);
           markerDataSet.push(projCoords);
         } else {
-          console.log("DSDSD");
-
           const projLastPoint = projection([constx, consty]);
-          lastPoint.push(projLastPoint);
-          console.log(lastPoint);
-          console.log(markerDataSet);
+          const lastPointWg = { lon: constx, lat: consty };
+          setDrawnCityCoords({ lon: constx, lat: consty });
+          geocoder
+            .reverse({ lat: lastPointWg.lat, lon: lastPointWg.lon })
+            .then((response) => {
+              let city =
+                response.address.city ||
+                response.address.town ||
+                response.address.hamlet ||
+                response.address.state;
+              console.log(city);
+              setDrawnCity(city);
+              dCity = city;
+              wiki()
+                .page(city)
+                .then((page) => page.summary())
+                .then((summary) => console.log(summary));
+            });
 
+          lastPoint.push(projLastPoint);
           drawVertexSet(markerDataSet);
           return;
         }
@@ -222,8 +252,6 @@ function WorldMap() {
     function getRandomInRange(from, to, fixed) {
       return (Math.random() * (to - from) + from).toFixed(4);
     }
-
-
   }, []);
 
   return (

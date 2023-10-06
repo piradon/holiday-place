@@ -17,31 +17,37 @@
   fill: #ffffff;
 } */
 
-.wrapper-svg {
+/* .wrapper-svg {
   display: flex;
   max-width: 1200px;
   margin: auto;
   display: flex;
 }
 .bg {
-	margin: 20px auto;
-	border: 1px solid #aaa;
-	background-color: #dcb;
+  margin: 20px auto;
+  border: 1px solid #aaa;
+  background-color: #dcb;
 }
 .marker {
-	fill: #31558d;
-	stroke: #31558d;
-	fill-opacity: .75;
-	transition: all .2s ease-in-out;
-	/* &:hover {
-		fill: #8d3155;
-		fill-opacity: 1;
-		cursor: pointer;
-	} */
+  fill: #31558d;
+  stroke: #31558d;
+  fill-opacity: 0.75;
+  transition: all 0.2s ease-in-out;
+ 
 }
 .graticule {
-	fill: none;
-	stroke: #ff0000;
-	stroke-opacity: .25;
-	stroke-width: 1px;
+  fill: none;
+  stroke: #ff0000;
+  stroke-opacity: 0.25;
+  stroke-width: 1px;
+} */
+
+.country-label {
+  font-family: "Segoe UI";
+  font-size: 3px;
+  font-weight: 600;
+  text-anchor: middle;
+  fill: white;
+  stroke: black;
+  stroke-width: .1px;
 }

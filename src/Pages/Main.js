@@ -9,8 +9,8 @@ function Main() {
   const drawnCountry = useSelector((state) => state.wiki.drawnCountry);
   //return <>{drawnCountry ? <WorldMap /> : <Carousel />}</>;
   //return <CityInfo />;
-  //return <WorldMap />;
-  return <Carousel />;
+  return <WorldMap />;
+  //return <Carousel />;
 }
 
 export default Main;
