@@ -43,11 +43,18 @@
 } */
 
 .country-label {
-  font-family: "Segoe UI";
-  font-size: 3px;
+  font-family: "Helvetica";
+  font-size: 1.8px;
   font-weight: 600;
   text-anchor: middle;
   fill: white;
   stroke: black;
-  stroke-width: .1px;
+  stroke-width: 0.05px;
+  box-shadow: 8px 8px 24px 0px rgba(66, 68, 90, 1);
+}
+
+.marker {
+  fill: #31558d;
+  fill-opacity: 0.75;
+  transition: all 0.2s ease-in-out;
 }

@@ -6,6 +6,7 @@ import {
   setDrawnCityCoords,
   setWikiContent,
   setWikiImage,
+  setWikiCountryInfo,
 } from "../../redux/actions/wikiActions";
 import * as d3 from "d3";
 import wiki from "wikijs";
@@ -48,7 +49,7 @@ function WorldMap() {
       .attr("d", geoGenerator)
       .attr("stroke", "#888")
       .attr("stroke-opacity", "0.25")
-      .attr("stroke-width", ".5px")
+      .attr("stroke-width", ".2px")
       .attr("class", "graticule")
       .attr("d", graticulePath);
 
@@ -57,6 +58,7 @@ function WorldMap() {
       .attr("fill", "#444")
       .attr("cursor", "pointer")
       .attr("stroke", "white")
+      .attr("stroke-width", ".05px")
       .selectAll("path")
       .data(shorte.features)
       .join("path")
@@ -105,7 +107,7 @@ function WorldMap() {
       //marker.attr("transform", transform);
     }
 
-    const markerDataSet = [];
+    let markerDataSet = [];
 
     const gerCoord = shorte.features.filter(
       (x) => x.properties.name === "Germany"
@@ -119,11 +121,11 @@ function WorldMap() {
         .join("circle")
         .attr("cx", ([x, y]) => x)
         .attr("cy", ([x, y]) => y)
-        .attr("r", 0.5)
+        .attr("r", 0.1)
         .attr("fill", "#3B38E5")
         .attr("fill-opacity", "1")
         .attr("stroke", "#fff")
-        .attr("stroke-width", ".1px")
+        .attr("stroke-width", ".02px")
         // start the circle as invisible
         .attr("opacity", 0)
 
@@ -132,9 +134,9 @@ function WorldMap() {
         })
         .transition()
         // // how long it takes each circle to fade in
-        .duration(1000)
+        .duration(500)
         // // how long to wait before transition the circle
-        .delay((d, i) => i * 500)
+        .delay((d, i) => i * 300)
         // // make the circle visible
         .attr("opacity", 1)
 
@@ -150,13 +152,14 @@ function WorldMap() {
       g.append("circle")
         .data(pointSet)
         .join("circle")
+        .classed("doKeep", true)
         .attr("cx", ([x, y]) => x)
         .attr("cy", ([x, y]) => y)
-        .attr("r", 0.5)
-        .attr("fill", "green")
+        .attr("r", 0.1)
+        .attr("fill", "#444444")
         .attr("fill-opacity", "1")
-        .attr("stroke", "#fff")
-        .attr("stroke-width", ".1px")
+        .attr("stroke", "white")
+        .attr("stroke-width", ".02px")
         // start the circle as invisible
         .attr("opacity", 0)
         .transition()
@@ -166,17 +169,49 @@ function WorldMap() {
         .delay((d, i) => i * 500)
         // // make the circle visible
         .attr("opacity", 1);
+      console.log(dCity);
       g.append("text")
         .text(dCity)
         .attr("x", pointSet[0][0])
-        .attr("y", pointSet[0][1] - 2)
+        .attr("y", pointSet[0][1] - 2.2)
         .attr("text-anchor", "middle")
         .attr("class", "country-label")
+        .attr("transform", `translate(0, 4)`)
         .attr("opacity", 0)
         .transition()
-        .duration(1000)
-        .delay(500)
+        .duration(2000)
+        .delay(1000)
         .attr("opacity", 1);
+
+      g.append("svg:path")
+        .attr("id", "marker")
+        .attr(
+          "d",
+          "M17.697 27.454c-1.444 1.583-3.126 3.002-5.014 4.149-.232.17-.548.191-.806.026-2.79-1.775-5.133-3.906-6.974-6.223C2.361 22.218.762 18.684.214 15.28-.344 11.828.178 8.507 1.896 5.807A11.66 11.66 0 0 1 4.492 2.93C6.915 1 9.681-.02 12.44 0c2.655.021 5.277 1.01 7.543 3.079.796.723 1.465 1.552 2.012 2.451 1.847 3.043 2.245 6.923 1.434 10.854-.801 3.885-2.79 7.832-5.732 11.061v.008z"
+        )
+        .attr("fill", "rgb(197, 34, 31)")
+        .attr("stroke", "#fff")
+        .attr("stroke-width", "1px")
+        .attr(
+          "transform",
+          `translate(${pointSet[0][0] - 1}, ${pointSet[0][1] - 3}) scale(.08)`
+        );
+
+      g.append("svg:path")
+        .attr("id", "marker")
+        .attr(
+          "d",
+          "M11.913 6.138a5.93 5.93 0 0 1 5.928 5.928 5.93 5.93 0 0 1-5.928 5.928 5.93 5.93 0 0 1-5.928-5.928c-.003-3.275 2.653-5.928 5.928-5.928z"
+        )
+        .attr("fill", "white")
+        .attr(
+          "transform",
+          `translate(${pointSet[0][0] - 1}, ${pointSet[0][1] - 3}) scale(.08)`
+        );
+      //.attr("transform", `translate(${pointSet[0][0]}, ${pointSet[0][1]})`);
+      //.on('mouseover', function(d){})
+
+      //.on('mouseover', function(d){})
     }
 
     const lowX = Math.floor(gBounds[0][0]);
@@ -211,14 +246,14 @@ function WorldMap() {
     )[0];
     zoomOnLoad(dd);
 
-    for (let index = 0; index < 40; index++) {
+    for (let index = 0; index < 60; index++) {
       let constx = getRandomInRange(lowX, highX);
       let consty = getRandomInRange(lowY, highY);
 
       if (
         d3.polygonContains(gerCoord.geometry.coordinates[0], [constx, consty])
       ) {
-        if (index < 20) {
+        if (index < 30) {
           const projCoords = projection([constx, consty]);
           markerDataSet.push(projCoords);
         } else {
@@ -239,7 +274,7 @@ function WorldMap() {
               wiki()
                 .page(city)
                 .then((page) => page.summary())
-                .then((summary) => console.log(summary));
+                .then((summary) => setWikiCountryInfo(summary));
             });
 
           lastPoint.push(projLastPoint);
