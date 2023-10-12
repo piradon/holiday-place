@@ -1,24 +1,21 @@
 import React, { useEffect, useState } from "react";
 import Nominatim from "nominatim-geocoder";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import {
   setDrawnCity,
   setDrawnCityCoords,
-  setWikiContent,
-  setWikiImage,
-  setWikiCountryInfo,
-} from "../../redux/actions/wikiActions";
+  getSummary,
+} from "../CityInfo/cityInfoSlice";
 import * as d3 from "d3";
-import wiki from "wikijs";
-import { feature, mesh } from "topojson-client";
 import { shorte } from "./shorte.js";
 import "./WorldMap.css";
 
 const geocoder = new Nominatim();
 
 function WorldMap() {
-  //  const drawnCityCoords = useSelector((state) => state.wiki.drawnCityCoords);
-  const drawnCity = useSelector((state) => state.wiki.drawnCity);
+  const dispatch = useDispatch();
+  dispatch(getSummary());
+
   useEffect(() => {
     let dCity = null;
     const width = window.innerWidth;
@@ -124,8 +121,8 @@ function WorldMap() {
         .attr("r", 0.1)
         .attr("fill", "#3B38E5")
         .attr("fill-opacity", "1")
-        .attr("stroke", "#fff")
-        .attr("stroke-width", ".02px")
+        // .attr("stroke", "#fff")
+        // .attr("stroke-width", ".02px")
         // start the circle as invisible
         .attr("opacity", 0)
 
@@ -147,7 +144,7 @@ function WorldMap() {
         });
     }
 
-    function drawLastPoint(pointSet) {
+    async function drawLastPoint(pointSet) {
       console.log("START DRAWING LAST POINT");
       g.append("circle")
         .data(pointSet)
@@ -156,10 +153,10 @@ function WorldMap() {
         .attr("cx", ([x, y]) => x)
         .attr("cy", ([x, y]) => y)
         .attr("r", 0.1)
-        .attr("fill", "#444444")
+        .attr("fill", "rgb(197, 34, 31)")
         .attr("fill-opacity", "1")
         .attr("stroke", "white")
-        .attr("stroke-width", ".02px")
+        .attr("stroke-width", ".025px")
         // start the circle as invisible
         .attr("opacity", 0)
         .transition()
@@ -173,7 +170,7 @@ function WorldMap() {
       g.append("text")
         .text(dCity)
         .attr("x", pointSet[0][0])
-        .attr("y", pointSet[0][1] - 2.2)
+        .attr("y", pointSet[0][1] - 3.3)
         .attr("text-anchor", "middle")
         .attr("class", "country-label")
         .attr("transform", `translate(0, 4)`)
@@ -194,7 +191,9 @@ function WorldMap() {
         .attr("stroke-width", "1px")
         .attr(
           "transform",
-          `translate(${pointSet[0][0] - 1}, ${pointSet[0][1] - 3}) scale(.08)`
+          `translate(${pointSet[0][0] - 0.315}, ${
+            pointSet[0][1] - 1
+          }) scale(.025)`
         );
 
       g.append("svg:path")
@@ -206,12 +205,10 @@ function WorldMap() {
         .attr("fill", "white")
         .attr(
           "transform",
-          `translate(${pointSet[0][0] - 1}, ${pointSet[0][1] - 3}) scale(.08)`
+          `translate(${pointSet[0][0] - 0.315}, ${
+            pointSet[0][1] - 1
+          }) scale(.025)`
         );
-      //.attr("transform", `translate(${pointSet[0][0]}, ${pointSet[0][1]})`);
-      //.on('mouseover', function(d){})
-
-      //.on('mouseover', function(d){})
     }
 
     const lowX = Math.floor(gBounds[0][0]);
@@ -259,7 +256,7 @@ function WorldMap() {
         } else {
           const projLastPoint = projection([constx, consty]);
           const lastPointWg = { lon: constx, lat: consty };
-          setDrawnCityCoords({ lon: constx, lat: consty });
+          dispatch(setDrawnCityCoords({ lon: constx, lat: consty }));
           geocoder
             .reverse({ lat: lastPointWg.lat, lon: lastPointWg.lon })
             .then((response) => {
@@ -269,14 +266,9 @@ function WorldMap() {
                 response.address.hamlet ||
                 response.address.state;
               console.log(city);
-              setDrawnCity(city);
+              dispatch(setDrawnCity(city));
               dCity = city;
-              wiki()
-                .page(city)
-                .then((page) => page.summary())
-                .then((summary) => setWikiCountryInfo(summary));
             });
-
           lastPoint.push(projLastPoint);
           drawVertexSet(markerDataSet);
           return;

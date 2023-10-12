@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import {
-  setDrawnCountry,
-  setWikiContent,
-  setWikiImage,
-} from "../../redux/actions/wikiActions";
-import wiki from "wikijs";
+import { setDrawnCountry } from "../CityInfo/cityInfoSlice";
 import { listFlag } from "../../constants/countries";
 import "./Carousel.css";
 
@@ -23,15 +18,15 @@ const Carousel = () => {
     const countries = listFlag.sort((a, b) => 0.5 - Math.random()).slice(0, 29);
     setCountries(countries);
 
-    wiki()
-      .page(countries[26].n)
-      .then((page) => page.summary())
-      .then((summary) => dispatch(setWikiContent(summary)));
+    // wiki()
+    //   .page(countries[26].n)
+    //   .then((page) => page.summary())
+    //   .then((summary) => dispatch(setWikiContent(summary)));
 
-    wiki()
-      .page(countries[26].n)
-      .then((page) => page.mainImage())
-      .then((image) => dispatch(setWikiImage(image)));
+    // wiki()
+    //   .page(countries[26].n)
+    //   .then((page) => page.mainImage())
+    //   .then((image) => dispatch(setWikiImage(image)));
   }, [dispatch]);
 
   const onDrawend = () => {

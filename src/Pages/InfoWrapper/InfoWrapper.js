@@ -4,12 +4,12 @@ import WorldMap from "../WorldMap/WorldMap";
 import CityInfo from "../CityInfo/CityInfo";
 
 function InfoWrapper() {
-  const wikiCountryInfo = useSelector((state) => state.wiki.wikiCountryInfo);
-  useEffect(() => {}, []);
+  // const wikiCountryInfo = useSelector((state) => state.wiki.wikiCountryInfo);
+  // useEffect(() => {}, []);
 
-  if (wikiCountryInfo !== null) {
-    return <CityInfo />;
-  }
+  // if (wikiCountryInfo !== null) {
+  //   return <CityInfo />;
+  // }
 
   return <WorldMap />;
 }

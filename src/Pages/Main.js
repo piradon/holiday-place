@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import Carousel from "./Carousel/Carousel";
 import CityInfo from "./CityInfo/CityInfo";
@@ -7,7 +7,13 @@ import InfoWrapper from "./InfoWrapper/InfoWrapper";
 import UsMap from "./WorldMap/Usmap";
 
 function Main() {
-  const drawnCountry = useSelector((state) => state.wiki.drawnCountry);
+  const summary = useSelector((state) => state.cityInfo.summary);
+
+  useEffect(() => {
+    console.log(summary);
+  }, []);
+
+  //const drawnCountry = useSelector((state) => state.wiki.drawnCountry);
   //return <>{drawnCountry ? <WorldMap /> : <Carousel />}</>;
   //return <CityInfo />;
   return <InfoWrapper />;

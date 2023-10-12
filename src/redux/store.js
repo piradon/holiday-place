@@ -1,5 +1,11 @@
-import { createStore, compose } from "redux";
-import RootReducer from "./reducers/RootReducer";
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const store = createStore(RootReducer, composeEnhancers());
+import { configureStore } from "@reduxjs/toolkit";
+import cityInfoReducer from "../Pages/CityInfo/cityInfoSlice";
+
+const store = configureStore({
+  reducer: {
+    cityInfo: cityInfoReducer,
+  },
+  devTools: true,
+});
+
 export default store;
