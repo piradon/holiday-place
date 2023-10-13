@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import Nominatim from "nominatim-geocoder";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  setDrawnCity,
   setDrawnCityCoords,
   getSummary,
+  getDrawnCityName,
+  getWikiImage,
 } from "../CityInfo/cityInfoSlice";
 import * as d3 from "d3";
 import { shorte } from "./shorte.js";
@@ -13,8 +14,11 @@ import "./WorldMap.css";
 const geocoder = new Nominatim();
 
 function WorldMap() {
+  const wikiImage = useSelector((state) => state.cityInfo.wikiImage);
   const dispatch = useDispatch();
   dispatch(getSummary());
+  dispatch(getDrawnCityName({ lat: 48, lon: 2 }));
+  dispatch(getWikiImage("Germany"));
 
   useEffect(() => {
     let dCity = null;
@@ -28,7 +32,7 @@ function WorldMap() {
       .attr("height", height)
       .attr(
         "style",
-        "max-width: 100%; height: auto; background-color:dcb; border:1px solid #aaa"
+        "max-width: 100%; height: auto; background-color:rgb(30, 43, 66); border:.5px solid #aaa"
       )
       .on("click", reset);
     let projection = d3.geoMercator().fitSize([width, height], shorte);
@@ -46,13 +50,13 @@ function WorldMap() {
       .attr("d", geoGenerator)
       .attr("stroke", "#888")
       .attr("stroke-opacity", "0.25")
-      .attr("stroke-width", ".2px")
+      .attr("stroke-width", ".1px")
       .attr("class", "graticule")
       .attr("d", graticulePath);
 
     const countries = g
       .append("g")
-      .attr("fill", "#444")
+      .attr("fill", "black")
       .attr("cursor", "pointer")
       .attr("stroke", "white")
       .attr("stroke-width", ".05px")
@@ -81,7 +85,7 @@ function WorldMap() {
       const [[x0, y0], [x1, y1]] = path.bounds(d);
       event.stopPropagation();
       countries.transition().style("fill", null);
-      d3.select(this).transition().style("fill", "red");
+      d3.select(this).transition().style("fill", "rgb(207 60 90)");
       svg
         .transition()
         .duration(750)
@@ -114,12 +118,14 @@ function WorldMap() {
     function drawVertexSet(pointSet) {
       var transitions = pointSet.length;
       g.selectAll("circle")
+        .attr("id", "int-marker")
+
         .data(pointSet)
         .join("circle")
         .attr("cx", ([x, y]) => x)
         .attr("cy", ([x, y]) => y)
-        .attr("r", 0.1)
-        .attr("fill", "#3B38E5")
+        .attr("r", 0.06)
+        .attr("fill", "white")
         .attr("fill-opacity", "1")
         // .attr("stroke", "#fff")
         // .attr("stroke-width", ".02px")
@@ -139,6 +145,9 @@ function WorldMap() {
 
         .on("end", function () {
           if (--transitions === 0) {
+            g.selectAll("circle").transition().duration(500).attr("opacity", 0);
+            //d3.selectAll("circle").transition().opacity(0);
+
             drawLastPoint(lastPoint);
           }
         });
@@ -223,7 +232,8 @@ function WorldMap() {
       let lold = countries._groups[0].filter((x) => {
         return x.__data__.properties.name === "Germany";
       });
-      d3.select(lold[0]).transition().style("fill", "#CC5A71");
+      ///#E1BB80 , ecru , #C5221F red , rgb(191 169 107) yellow
+      d3.select(lold[0]).transition().style("fill", "rgb(232 83 80)");
       svg
         .transition()
         .duration(750)
@@ -266,7 +276,7 @@ function WorldMap() {
                 response.address.hamlet ||
                 response.address.state;
               console.log(city);
-              dispatch(setDrawnCity(city));
+              //dispatch(setDrawnCity(city));
               dCity = city;
             });
           lastPoint.push(projLastPoint);
