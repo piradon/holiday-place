@@ -16,23 +16,26 @@ const geocoder = new Nominatim();
 function WorldMap() {
   const wikiImage = useSelector((state) => state.cityInfo.wikiImage);
   const dispatch = useDispatch();
-  dispatch(getSummary());
   dispatch(getDrawnCityName({ lat: 48, lon: 2 }));
   dispatch(getWikiImage("Germany"));
 
   useEffect(() => {
     let dCity = null;
     const width = window.innerWidth;
-    const height = window.innerHeight - 20;
+    const height = window.innerHeight;
+    console.log(height);
     const svg = d3
       .select("#map")
       .append("svg")
+      .attr("id", "world-map")
       .attr("viewBox", [0, 0, width, height])
       .attr("width", width)
       .attr("height", height)
+
+
       .attr(
         "style",
-        "max-width: 100%; height: auto; background-color:rgb(30, 43, 66); border:.5px solid #aaa"
+        "max-width: 100%; min-width:200px; min-height:200px; max-height:100%; background-color:rgb(30, 43, 66); border:1px solid violet"
       )
       .on("click", reset);
     let projection = d3.geoMercator().fitSize([width, height], shorte);
@@ -124,7 +127,7 @@ function WorldMap() {
         .join("circle")
         .attr("cx", ([x, y]) => x)
         .attr("cy", ([x, y]) => y)
-        .attr("r", 0.06)
+        .attr("r", 0.3)
         .attr("fill", "white")
         .attr("fill-opacity", "1")
         // .attr("stroke", "#fff")
@@ -145,7 +148,10 @@ function WorldMap() {
 
         .on("end", function () {
           if (--transitions === 0) {
-            g.selectAll("circle").transition().duration(500).attr("opacity", 0);
+            g.selectAll("circle")
+              .transition()
+              .duration(1000)
+              .attr("opacity", 0);
             //d3.selectAll("circle").transition().opacity(0);
 
             drawLastPoint(lastPoint);
@@ -161,11 +167,11 @@ function WorldMap() {
         .classed("doKeep", true)
         .attr("cx", ([x, y]) => x)
         .attr("cy", ([x, y]) => y)
-        .attr("r", 0.1)
+        .attr("r", 0.3)
         .attr("fill", "rgb(197, 34, 31)")
         .attr("fill-opacity", "1")
         .attr("stroke", "white")
-        .attr("stroke-width", ".025px")
+        .attr("stroke-width", ".08px")
         // start the circle as invisible
         .attr("opacity", 0)
         .transition()
@@ -176,18 +182,18 @@ function WorldMap() {
         // // make the circle visible
         .attr("opacity", 1);
       console.log(dCity);
-      g.append("text")
-        .text(dCity)
-        .attr("x", pointSet[0][0])
-        .attr("y", pointSet[0][1] - 3.3)
-        .attr("text-anchor", "middle")
-        .attr("class", "country-label")
-        .attr("transform", `translate(0, 4)`)
-        .attr("opacity", 0)
-        .transition()
-        .duration(2000)
-        .delay(1000)
-        .attr("opacity", 1);
+      // g.append("text")
+      //   .text(dCity)
+      //   .attr("x", pointSet[0][0])
+      //   .attr("y", pointSet[0][1] - 3.3)
+      //   .attr("text-anchor", "middle")
+      //   .attr("class", "country-label")
+      //   .attr("transform", `translate(0, 4)`)
+      //   .attr("opacity", 0)
+      //   .transition()
+      //   .duration(2000)
+      //   .delay(1000)
+      //   .attr("opacity", 1);
 
       g.append("svg:path")
         .attr("id", "marker")
@@ -200,9 +206,9 @@ function WorldMap() {
         .attr("stroke-width", "1px")
         .attr(
           "transform",
-          `translate(${pointSet[0][0] - 0.315}, ${
-            pointSet[0][1] - 1
-          }) scale(.025)`
+          `translate(${pointSet[0][0] - 1.23}, ${
+            pointSet[0][1] - 3.9
+          }) scale(.1)`
         );
 
       g.append("svg:path")
@@ -214,10 +220,19 @@ function WorldMap() {
         .attr("fill", "white")
         .attr(
           "transform",
-          `translate(${pointSet[0][0] - 0.315}, ${
-            pointSet[0][1] - 1
-          }) scale(.025)`
+          `translate(${pointSet[0][0] - 1.23}, ${
+            pointSet[0][1] - 3.9
+          }) scale(.1)`
         );
+      d3.select("#world-map")
+        //.attr("width", width)
+        .transition()
+        .duration(3000)
+        .attr("height", 200)
+        .attr("width", 200)
+        .on("end", function () {
+          dispatch(getSummary());
+        });
     }
 
     const lowX = Math.floor(gBounds[0][0]);
@@ -242,7 +257,10 @@ function WorldMap() {
           d3.zoomIdentity
             .translate(width / 2, height / 2)
             .scale(
-              Math.min(8, 0.9 / Math.max((x1 - x0) / width, (y1 - y0) / height))
+              Math.min(
+                28,
+                0.9 / Math.max((x1 - x0) / width, (y1 - y0) / height)
+              )
             )
             .translate(-(x0 + x1) / 2, -(y0 + y1) / 2)
         );
@@ -291,19 +309,7 @@ function WorldMap() {
     }
   }, []);
 
-  return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        height: "100%",
-        width: "100%",
-        justifyContent: "center",
-      }}
-    >
-      <div id="map" />
-    </div>
-  );
+  return <div id="map" />;
 }
 
 export default WorldMap;

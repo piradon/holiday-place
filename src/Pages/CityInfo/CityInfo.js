@@ -1,21 +1,20 @@
 import React, { useEffect } from "react";
+import WorldMap from "../WorldMap/WorldMap";
 import { useSelector } from "react-redux";
 import "./CityInfo.css";
 
 const CityInfo = () => {
-  const wikiContent = useSelector((state) => state.wiki.wikiContent);
-  const wikiImage = useSelector((state) => state.wiki.wikiImage);
+  const summary = useSelector((state) => state.cityInfo.summary);
+  const wikiImage = useSelector((state) => state.cityInfo.wikiImage);
 
   useEffect(() => {
     return () => {};
   }, []);
 
-  if (wikiContent && wikiImage) {
-    return (
-      <div className="city-container">
-        <div className="city-info-wrapper">
-          <div className="city-info">
-            <img
+  return (
+    <div className="city-container">
+      <div className="city-info-wrapper">
+        {/* <img
               src={wikiImage}
               alt="Girl in a jacket"
               style={{
@@ -24,15 +23,13 @@ const CityInfo = () => {
                 float: "right",
                 padding: "2em",
               }}
-            />
-            <div>{wikiContent}</div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+            /> */}
 
-  return <div>Loader</div>;
+        <WorldMap />
+        {summary !== null && <div className="summary-wrapper">{summary}</div>}
+      </div>
+    </div>
+  );
 };
 
 export default CityInfo;

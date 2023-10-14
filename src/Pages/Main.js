@@ -15,8 +15,15 @@ function Main() {
 
   //const drawnCountry = useSelector((state) => state.wiki.drawnCountry);
   //return <>{drawnCountry ? <WorldMap /> : <Carousel />}</>;
-  //return <CityInfo />;
-  return <InfoWrapper />;
+  return (
+    <>
+      {/* <InfoWrapper/> */}
+      <CityInfo />
+      {/* {summary && <CityInfo />} */}
+      {/* <InfoWrapper /> */}
+    </>
+  );
+
   //return <Carousel />;
 }
 
