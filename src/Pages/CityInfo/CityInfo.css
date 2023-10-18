@@ -18,12 +18,26 @@
 #map {
   max-height: 100%;
   display: inline;
-  min-height: 200px;
+  min-height: 400px;
 }
 
 .summary-wrapper {
   font-family: "Open Sans", sans-serif;
-  text-indent: 50px;
   line-height: 1.6;
   font-size: 14px;
+  border: 1px solid violet;
+  padding: 37px;
+}
+
+.summary-container {
+  text-indent: 50px;
+}
+
+.city-info-hdr {
+  text-indent: 50px;
+}
+
+.city-info-ur {
+  margin-top: 1em;
+  margin-bottom: 1em;
 }

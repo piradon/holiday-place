@@ -58,3 +58,16 @@
   fill-opacity: 0.75;
   transition: all 0.2s ease-in-out;
 }
+
+@keyframes fadeIn {
+  0% { width: 0; }
+  100% { opacity: 400; }
+}
+
+.city-img {
+  object-fit: cover;
+  border: 1px solid violet;
+  margin-top: 24px;
+  animation: fadeIn 1s;
+}
+

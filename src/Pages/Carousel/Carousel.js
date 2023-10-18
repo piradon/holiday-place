@@ -10,27 +10,12 @@ const Carousel = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // wiki()
-    //   .page("Germany")
-    //   .then((page) => page.info())
-    //   .then(console.log);
-
     const countries = listFlag.sort((a, b) => 0.5 - Math.random()).slice(0, 29);
     setCountries(countries);
-
-    // wiki()
-    //   .page(countries[26].n)
-    //   .then((page) => page.summary())
-    //   .then((summary) => dispatch(setWikiContent(summary)));
-
-    // wiki()
-    //   .page(countries[26].n)
-    //   .then((page) => page.mainImage())
-    //   .then((image) => dispatch(setWikiImage(image)));
   }, [dispatch]);
 
   const onDrawend = () => {
-    dispatch(setDrawnCountry(countries[26]));
+    dispatch(setDrawnCountry(countries[26].n));
   };
 
   const handleToggleClicked = () => {

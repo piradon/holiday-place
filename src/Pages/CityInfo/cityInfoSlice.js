@@ -24,31 +24,34 @@ export const getDrawnCityName = createAsyncThunk(
         const city =
           response.address.city ||
           response.address.town ||
+          response.address.village ||
           response.address.hamlet ||
           response.address.state;
         return city;
       });
-
     return drawnCityName;
   }
 );
 
-export const getSummary = createAsyncThunk("summary/getSummary", async () => {
-  const summary = await wiki()
-    .page("Germany")
-    .then((page) => page.summary())
-    .then((summary) => {
-      return summary;
-    });
+export const getSummary = createAsyncThunk(
+  "summary/getSummary",
+  async (drawnCity) => {
+    const summary = await wiki()
+      .page(drawnCity)
+      .then((page) => page.summary())
+      .then((summary) => {
+        return summary;
+      });
 
-  return summary;
-});
+    return summary;
+  }
+);
 
 export const getWikiImage = createAsyncThunk(
   "wikiImage/getWikiImage",
-  async (drawnCountry) => {
+  async (drawnCity) => {
     const wikiImage = await wiki()
-      .page(drawnCountry)
+      .page(drawnCity)
       .then((page) => page.mainImage())
       .then((image) => {
         console.log(image);

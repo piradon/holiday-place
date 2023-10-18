@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
-import Nominatim from "nominatim-geocoder";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  setDrawnCityCoords,
   getSummary,
   getDrawnCityName,
   getWikiImage,
@@ -11,19 +9,24 @@ import * as d3 from "d3";
 import { shorte } from "./shorte.js";
 import "./WorldMap.css";
 
-const geocoder = new Nominatim();
-
 function WorldMap() {
-  const wikiImage = useSelector((state) => state.cityInfo.wikiImage);
+  const drawnCity = useSelector((state) => state.cityInfo.drawnCity);
+  const drawnCountry = useSelector((state) => state.cityInfo.drawnCountry);
+
+  const [isDrawnCityReady, setDrawnCityReady] = useState(false);
+
   const dispatch = useDispatch();
-  dispatch(getDrawnCityName({ lat: 48, lon: 2 }));
-  dispatch(getWikiImage("Germany"));
 
   useEffect(() => {
-    let dCity = null;
+    if (drawnCity && isDrawnCityReady) {
+      dispatch(getSummary(drawnCity));
+      dispatch(getWikiImage(drawnCity));
+    }
+  }, [drawnCity, isDrawnCityReady, dispatch]);
+
+  useEffect(() => {
     const width = window.innerWidth;
     const height = window.innerHeight;
-    console.log(height);
     const svg = d3
       .select("#map")
       .append("svg")
@@ -32,10 +35,9 @@ function WorldMap() {
       .attr("width", width)
       .attr("height", height)
 
-
       .attr(
         "style",
-        "max-width: 100%; min-width:200px; min-height:200px; max-height:100%; background-color:rgb(30, 43, 66); border:1px solid violet"
+        "max-width: 100%; min-width:400px; min-height:400px; max-height:100%; background-color:rgb(30, 43, 66); border:1px solid violet"
       )
       .on("click", reset);
     let projection = d3.geoMercator().fitSize([width, height], shorte);
@@ -108,15 +110,14 @@ function WorldMap() {
       const { transform } = event;
       g.attr("transform", transform);
       g.attr("stroke-width", 1 / transform.k);
-      //marker.attr("transform", transform);
     }
 
     let markerDataSet = [];
 
-    const gerCoord = shorte.features.filter(
-      (x) => x.properties.name === "Germany"
+    const cityCoords = shorte.features.filter(
+      (x) => x.properties.name === drawnCountry
     )[0];
-    var gBounds = d3.geoBounds(gerCoord);
+    var gBounds = d3.geoBounds(cityCoords);
 
     function drawVertexSet(pointSet) {
       var transitions = pointSet.length;
@@ -145,22 +146,22 @@ function WorldMap() {
         .delay((d, i) => i * 300)
         // // make the circle visible
         .attr("opacity", 1)
-
+        .transition()
+        .duration(500)
+        .delay((d, i) => i * 50)
+        .attr("opacity", 0)
         .on("end", function () {
           if (--transitions === 0) {
             g.selectAll("circle")
               .transition()
               .duration(1000)
               .attr("opacity", 0);
-            //d3.selectAll("circle").transition().opacity(0);
-
             drawLastPoint(lastPoint);
           }
         });
     }
 
     async function drawLastPoint(pointSet) {
-      console.log("START DRAWING LAST POINT");
       g.append("circle")
         .data(pointSet)
         .join("circle")
@@ -181,7 +182,7 @@ function WorldMap() {
         .delay((d, i) => i * 500)
         // // make the circle visible
         .attr("opacity", 1);
-      console.log(dCity);
+
       // g.append("text")
       //   .text(dCity)
       //   .attr("x", pointSet[0][0])
@@ -191,12 +192,12 @@ function WorldMap() {
       //   .attr("transform", `translate(0, 4)`)
       //   .attr("opacity", 0)
       //   .transition()
-      //   .duration(2000)
+      //   .duration(4000)
       //   .delay(1000)
       //   .attr("opacity", 1);
 
       g.append("svg:path")
-        .attr("id", "marker")
+        .attr("class", "exclude-zoom")
         .attr(
           "d",
           "M17.697 27.454c-1.444 1.583-3.126 3.002-5.014 4.149-.232.17-.548.191-.806.026-2.79-1.775-5.133-3.906-6.974-6.223C2.361 22.218.762 18.684.214 15.28-.344 11.828.178 8.507 1.896 5.807A11.66 11.66 0 0 1 4.492 2.93C6.915 1 9.681-.02 12.44 0c2.655.021 5.277 1.01 7.543 3.079.796.723 1.465 1.552 2.012 2.451 1.847 3.043 2.245 6.923 1.434 10.854-.801 3.885-2.79 7.832-5.732 11.061v.008z"
@@ -212,7 +213,7 @@ function WorldMap() {
         );
 
       g.append("svg:path")
-        .attr("id", "marker")
+        .attr("class", "exclude-zoom")
         .attr(
           "d",
           "M11.913 6.138a5.93 5.93 0 0 1 5.928 5.928 5.93 5.93 0 0 1-5.928 5.928 5.93 5.93 0 0 1-5.928-5.928c-.003-3.275 2.653-5.928 5.928-5.928z"
@@ -224,14 +225,14 @@ function WorldMap() {
             pointSet[0][1] - 3.9
           }) scale(.1)`
         );
+
       d3.select("#world-map")
-        //.attr("width", width)
         .transition()
         .duration(3000)
-        .attr("height", 200)
-        .attr("width", 200)
+        .attr("height", 400)
+        .attr("width", 400)
         .on("end", function () {
-          dispatch(getSummary());
+          setDrawnCityReady(true);
         });
     }
 
@@ -245,7 +246,7 @@ function WorldMap() {
       const [[x0, y0], [x1, y1]] = path.bounds(d);
 
       let lold = countries._groups[0].filter((x) => {
-        return x.__data__.properties.name === "Germany";
+        return x.__data__.properties.name === drawnCountry;
       });
       ///#E1BB80 , ecru , #C5221F red , rgb(191 169 107) yellow
       d3.select(lold[0]).transition().style("fill", "rgb(232 83 80)");
@@ -267,7 +268,7 @@ function WorldMap() {
     }
 
     const dd = shorte.features.filter(
-      (x) => x.properties.name === "Germany"
+      (x) => x.properties.name === drawnCountry
     )[0];
     zoomOnLoad(dd);
 
@@ -276,29 +277,17 @@ function WorldMap() {
       let consty = getRandomInRange(lowY, highY);
 
       if (
-        d3.polygonContains(gerCoord.geometry.coordinates[0], [constx, consty])
+        d3.polygonContains(cityCoords.geometry.coordinates[0], [constx, consty])
       ) {
         if (index < 30) {
           const projCoords = projection([constx, consty]);
           markerDataSet.push(projCoords);
         } else {
           const projLastPoint = projection([constx, consty]);
-          const lastPointWg = { lon: constx, lat: consty };
-          dispatch(setDrawnCityCoords({ lon: constx, lat: consty }));
-          geocoder
-            .reverse({ lat: lastPointWg.lat, lon: lastPointWg.lon })
-            .then((response) => {
-              let city =
-                response.address.city ||
-                response.address.town ||
-                response.address.hamlet ||
-                response.address.state;
-              console.log(city);
-              //dispatch(setDrawnCity(city));
-              dCity = city;
-            });
+
           lastPoint.push(projLastPoint);
           drawVertexSet(markerDataSet);
+          dispatch(getDrawnCityName({ lat: consty, lon: constx }));
           return;
         }
       }
