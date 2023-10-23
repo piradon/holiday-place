@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import WorldMap from "../WorldMap/WorldMap";
 import CityClimate from "../Weather/Weather";
-import { getDrawnCityNameWeather, getCityWeather } from "./cityInfoSlice";
+import { getCityWeather } from "./cityInfoSlice";
 import { useSelector, useDispatch } from "react-redux";
 import "./CityInfo.css";
 
@@ -19,12 +19,6 @@ const CityInfo = () => {
 
   useEffect(() => {
     if (drawnCityCoords) {
-      dispatch(
-        getDrawnCityNameWeather({
-          lat: drawnCityCoords.lat,
-          lon: drawnCityCoords.lon,
-        })
-      );
       dispatch(
         getCityWeather({
           lat: drawnCityCoords.lat,
@@ -72,5 +66,3 @@ const CityInfo = () => {
 };
 
 export default CityInfo;
-
-////https://en.wikipedia.org/w/api.php?action=query&prop=pageimages&format=json&piprop=original&titles=London

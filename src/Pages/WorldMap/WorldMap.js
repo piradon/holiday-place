@@ -247,61 +247,36 @@ function WorldMap() {
     zoomOnLoad(countryCoords);
 
     const amountOfCountryElems = countryCoords.geometry.coordinates.length;
-    console.log(amountOfCountryElems);
+
     for (let index = 0; index < 50; index++) {
       let constx = getRandomInRange(lowX, highX);
       let consty = getRandomInRange(lowY, highY);
       const point = turf.point([constx, consty]);
 
+      let poly = null;
       if (amountOfCountryElems === 1) {
-        const poly = turf.polygon(countryCoords.geometry.coordinates);
-        const isMarkerInside = turf.booleanContains(poly, point);
-
-        if (isMarkerInside && index < 25) {
-          const projCoords = projection([constx, consty]);
-          markerDataSet.push(projCoords);
-        } else if (isMarkerInside && index > 24) {
-          const projLastPoint = projection([constx, consty]);
-          g.append("path")
-            .attr("d", markerDataSet)
-            .attr("fill", "red")
-            .attr("stroke-width", 2)
-            .attr("stroke", "darkgrey");
-
-          markerDataSet.push(projLastPoint);
-          drawLastPoint(markerDataSet);
-          dispatch(setDrawnCityCoords({ lat: consty, lon: constx }));
-          dispatch(getDrawnCityName({ lat: consty, lon: constx }));
-          return;
-        }
+        poly = turf.polygon(countryCoords.geometry.coordinates);
       } else {
-        for (
-          let geoCheckIndex = 0;
-          geoCheckIndex < amountOfCountryElems;
-          geoCheckIndex++
-        ) {
-          const poly = turf.polygon(
-            countryCoords.geometry.coordinates[geoCheckIndex]
-          );
-          const isMarkerInside = turf.booleanContains(poly, point);
-          if (isMarkerInside && index < 30) {
-            const projCoords = projection([constx, consty]);
-            markerDataSet.push(projCoords);
-            geoCheckIndex = 100;
-          } else if (isMarkerInside && index > 29) {
-            const projLastPoint = projection([constx, consty]);
-            g.append("path")
-              .attr("d", markerDataSet)
-              .attr("fill", "red")
-              .attr("stroke-width", 2)
-              .attr("stroke", "darkgrey");
+        poly = turf.multiPolygon(countryCoords.geometry.coordinates);
+      }
+      const isMarkerInside = turf.booleanPointInPolygon(point, poly);
 
-            markerDataSet.push(projLastPoint);
-            drawLastPoint(markerDataSet);
-            dispatch(getDrawnCityName({ lat: consty, lon: constx }));
-            return;
-          }
-        }
+      if (isMarkerInside && index < 25) {
+        const projCoords = projection([constx, consty]);
+        markerDataSet.push(projCoords);
+      } else if (isMarkerInside && index > 24) {
+        const projLastPoint = projection([constx, consty]);
+        g.append("path")
+          .attr("d", markerDataSet)
+          .attr("fill", "red")
+          .attr("stroke-width", 2)
+          .attr("stroke", "darkgrey");
+
+        markerDataSet.push(projLastPoint);
+        drawLastPoint(markerDataSet);
+        dispatch(setDrawnCityCoords({ lat: consty, lon: constx }));
+        dispatch(getDrawnCityName({ lat: consty, lon: constx }));
+        return;
       }
     }
 
