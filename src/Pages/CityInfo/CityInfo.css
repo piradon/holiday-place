@@ -27,6 +27,7 @@
   font-size: 14px;
   border: 1px solid violet;
   padding: 37px;
+  animation: fadeInOp 0.8s;
 }
 
 .summary-container {
@@ -40,4 +41,29 @@
 .city-info-ur {
   margin-top: 1em;
   margin-bottom: 1em;
+}
+
+@keyframes fadeIn {
+  0% {
+    width: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInOp {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.city-img {
+  object-fit: cover;
+  border: 1px solid violet;
+  margin-top: 24px;
+  animation: fadeInOp 0.8s;
 }

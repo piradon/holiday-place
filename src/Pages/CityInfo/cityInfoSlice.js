@@ -25,6 +25,7 @@ export const getDrawnCityName = createAsyncThunk(
           response.address.city ||
           response.address.town ||
           response.address.village ||
+          response.address.county ||
           response.address.hamlet ||
           response.address.state;
         return city;

@@ -25,7 +25,13 @@ const CityInfo = () => {
               width="400"
               alt="flag"
               className="city-img"
-              style={isImageLoaded ? {} : { display: "none" }}
+              style={
+                isImageLoaded &&
+                wikiImage !==
+                  "https://upload.wikimedia.org/wikipedia/en/5/5f/Disambig_gray.svg"
+                  ? {}
+                  : { display: "none" }
+              }
               onLoad={() => {
                 setImageLoaded(true);
               }}
