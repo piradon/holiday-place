@@ -132,7 +132,7 @@ export const listFlag = [
   //   n: "Micronesia (Federated States of)",
   // },
   { cd: "md", n: "Moldova" },
-  { cd: "mc", n: "Monaco" },
+  //{ cd: "mc", n: "Monaco" },
   { cd: "mn", n: "Mongolia" },
   { cd: "me", n: "Montenegro" },
   { cd: "ma", n: "Morocco" },

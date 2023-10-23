@@ -1,7 +1,7 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import Carousel from "./Carousel/Carousel";
 import CityInfo from "./CityInfo/CityInfo";
+import { useSelector } from "react-redux";
 
 function Main() {
   const drawnCountry = useSelector((state) => state.cityInfo.drawnCountry);

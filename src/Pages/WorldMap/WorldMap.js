@@ -5,6 +5,7 @@ import {
   getSummary,
   getDrawnCityName,
   getWikiImage,
+  setDrawnCityCoords,
 } from "../CityInfo/cityInfoSlice";
 import * as d3 from "d3";
 import { mediumAccuracyWorld } from "./mediumAccuracyWorld.js";
@@ -269,6 +270,7 @@ function WorldMap() {
 
           markerDataSet.push(projLastPoint);
           drawLastPoint(markerDataSet);
+          dispatch(setDrawnCityCoords({ lat: consty, lon: constx }));
           dispatch(getDrawnCityName({ lat: consty, lon: constx }));
           return;
         }

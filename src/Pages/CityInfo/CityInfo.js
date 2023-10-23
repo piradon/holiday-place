@@ -1,18 +1,38 @@
 import React, { useEffect, useState } from "react";
 import WorldMap from "../WorldMap/WorldMap";
-import { useSelector } from "react-redux";
+import CityClimate from "../Weather/Weather";
+import { getDrawnCityNameWeather, getCityWeather } from "./cityInfoSlice";
+import { useSelector, useDispatch } from "react-redux";
 import "./CityInfo.css";
 
 const CityInfo = () => {
   const summary = useSelector((state) => state.cityInfo.summary);
   const wikiImage = useSelector((state) => state.cityInfo.wikiImage);
   const drawnCity = useSelector((state) => state.cityInfo.drawnCity);
+  const drawnCityCoords = useSelector(
+    (state) => state.cityInfo.drawnCityCoords
+  );
 
   const [isImageLoaded, setImageLoaded] = useState(false);
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
-    return () => {};
-  }, []);
+    if (drawnCityCoords) {
+      dispatch(
+        getDrawnCityNameWeather({
+          lat: drawnCityCoords.lat,
+          lon: drawnCityCoords.lon,
+        })
+      );
+      dispatch(
+        getCityWeather({
+          lat: drawnCityCoords.lat,
+          lon: drawnCityCoords.lon,
+        })
+      );
+    }
+  }, [drawnCityCoords, dispatch]);
 
   return (
     <div className="city-container">
@@ -45,6 +65,7 @@ const CityInfo = () => {
             {<div className="summary-container">{summary}</div>}
           </div>
         )}
+        {isImageLoaded && wikiImage && drawnCity && <CityClimate />}
       </div>
     </div>
   );
