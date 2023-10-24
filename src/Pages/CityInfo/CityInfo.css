@@ -5,14 +5,9 @@
   color: white;
 }
 .city-info-wrapper {
-  background-color: #160e1d;
-  height: 100%;
-}
-
-.city-info-wrapper {
   display: flex;
   padding: 4em;
-  gap: 5%;
+  background-color: #160e1d;
 }
 
 #map {
@@ -28,6 +23,7 @@
   border: 1px solid violet;
   padding: 37px;
   animation: fadeInOp 0.8s;
+  min-height: 400px;
 }
 
 .summary-container {

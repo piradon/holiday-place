@@ -11134,7 +11134,7 @@ export const mediumAccuracyWorld = {
     },
     {
       type: "Feature",
-      properties: { name: "Republic of Serbia" },
+      properties: { name: "Serbia" },
       geometry: {
         type: "Polygon",
         coordinates: [

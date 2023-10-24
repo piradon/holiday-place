@@ -30,7 +30,15 @@ const CityInfo = () => {
 
   return (
     <div className="city-container">
-      <div className="city-info-wrapper">
+      <div
+        className="city-info-wrapper"
+        style={{
+          alignItems: summary ? "start" : "",
+          minHeigth: summary ? "100vh" : "",
+          height: summary ? "" : "100%",
+          gap: summary ? "5%" : "",
+        }}
+      >
         <div style={{ width: summary ? "400px" : "" }}>
           <WorldMap />
           {wikiImage && (

@@ -9,39 +9,35 @@ import { ReactComponent as Cloud } from "../../icons/cloud.svg";
 import "./Weather.css";
 
 function CityClimate() {
-  const drawnCity = useSelector((state) => state.cityInfo.drawnCity);
   const weather = useSelector((state) => state.cityInfo.weather);
 
   if (Object.keys(weather).length !== 0) {
     return (
-        <div className="box">
-          <div className="city-name">
-            <p>{drawnCity}</p>
-          </div>
-          <div className="weather-info-container">
-            <div className="weather-info">
-              {weather.icon === "01n" ? (
-                <ClearSky />
-              ) : weather.icon === "10n" ? (
-                <Rain />
-              ) : weather.icon === "11n" ? (
-                <Thunderstorm />
-              ) : weather.icon === "09n" ? (
-                <Drizzle />
-              ) : weather.icon === "13n" ? (
-                <Snow />
-              ) : weather.icon === "03n" || weather.icon === "04d" ? (
-                <Cloud />
-              ) : (
-                <></>
-              )}
-              <p style={{ fontSize: 18 }}>{weather.temp} °C</p>
-              <p>{weather.windSpeed} m/s</p>
-              <p>{weather.humidity} %</p>
-              <p>{weather.description}</p>
-            </div>
-          </div>
+      <div className="box">
+        {weather.icon === "01n" ? (
+          <ClearSky />
+        ) : weather.icon === "10n" ? (
+          <Rain />
+        ) : weather.icon === "11n" ? (
+          <Thunderstorm />
+        ) : weather.icon === "09n" ? (
+          <Drizzle />
+        ) : weather.icon === "13n" ? (
+          <Snow />
+        ) : weather.icon === "03n" ||
+          weather.icon === "04d" ||
+          weather.icon === "02n" ? (
+          <Cloud />
+        ) : (
+          <></>
+        )}
+        <div className="weather-info">
+          <div style={{ fontSize: 18 }}>{weather.temp} °C</div>
+          <div>{weather.windSpeed} m/s</div>
+          <div>{weather.humidity} %</div>
+          <div>{weather.description}</div>
         </div>
+      </div>
     );
   }
 
