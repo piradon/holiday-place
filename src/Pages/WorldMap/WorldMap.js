@@ -40,7 +40,7 @@ function WorldMap() {
       .attr("height", height)
       .attr(
         "style",
-        "max-width: 100%; min-width:400px; min-height:400px; max-height:100%; background-color:#31558d"
+        "max-width: 100%; min-width:400px; min-height:400px; max-height:100%; background-color:#31558d; border:1px solid violet"
       )
       .on("click", reset);
 
