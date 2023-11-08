@@ -11,6 +11,8 @@ import * as d3 from "d3";
 import { mediumAccuracyWorld } from "./mediumAccuracyWorld.js";
 import "./WorldMap.css";
 
+const MARKER_POINT_RADIUS = 0.3;
+const MARKER_POINT_STROKE_WIDTH = 0.08;
 function WorldMap() {
   const drawnCity = useSelector((state) => state.cityInfo.drawnCity);
   const drawnCountry = useSelector((state) => state.cityInfo.drawnCountry);
@@ -36,10 +38,9 @@ function WorldMap() {
       .attr("viewBox", [0, 0, width, height])
       .attr("width", width)
       .attr("height", height)
-
       .attr(
         "style",
-        "max-width: 100%; min-width:400px; min-height:400px; max-height:100%; background-color:rgb(30, 43, 66); border:1px solid violet"
+        "max-width: 100%; min-width:400px; min-height:400px; max-height:100%; background-color:#31558d"
       )
       .on("click", reset);
 
@@ -54,6 +55,12 @@ function WorldMap() {
     const graticules = graticuleGenerator();
     const geoGenerator = d3.geoPath().projection(projection);
     const graticulePath = geoGenerator(graticules);
+
+    const countryCoords = mediumAccuracyWorld.features.filter(
+      (x) => x.properties.name === drawnCountry
+    )[0];
+
+    const gBounds = d3.geoBounds(countryCoords);
 
     g.append("path")
       .datum(graticules)
@@ -79,11 +86,33 @@ function WorldMap() {
     const zoom = d3.zoom().scaleExtent([1, 20]).on("zoom", zoomed);
     svg.call(zoom);
 
-    const countryCoords = mediumAccuracyWorld.features.filter(
-      (x) => x.properties.name === drawnCountry
-    )[0];
+    function zoomOnLoad(countryCoords) {
+      const [[x0, y0], [x1, y1]] = path.bounds(countryCoords);
 
-    const gBounds = d3.geoBounds(countryCoords);
+      let zoomedCountry = countries._groups[0].filter((x) => {
+        return x.__data__.properties.name === drawnCountry;
+      });
+      ///#E1BB80 , ecru , #C5221F red , rgb(191 169 107) yellow
+      d3.select(zoomedCountry[0]).transition().style("fill", "rgb(232 83 80)");
+
+      svg
+        .transition()
+        .duration(750)
+        .call(
+          zoom.transform,
+          d3.zoomIdentity
+            .translate(width / 2, height / 2)
+            .scale(
+              Math.min(
+                28,
+                0.9 / Math.max((x1 - x0) / width, (y1 - y0) / height)
+              )
+            )
+            .translate(-(x0 + x1) / 2, -(y0 + y1) / 2)
+        );
+    }
+
+    zoomOnLoad(countryCoords);
 
     function reset() {
       countries.transition().style("fill", null);
@@ -120,44 +149,43 @@ function WorldMap() {
     function zoomed(event) {
       const { transform } = event;
       g.attr("transform", transform);
-      g.attr("stroke-width", 1 / transform.k);
     }
 
     let markerDataSet = [];
-
     async function drawLastPoint(pointSet) {
       const lineGenerator = d3.line().curve(d3.curveBundle.beta(1.25));
-      const pathDataa = lineGenerator(markerDataSet);
+      const pathData = lineGenerator(markerDataSet);
+
       const markerPath = g
         .append("path")
-        .attr("d", pathDataa)
+        .attr("d", pathData)
         .attr("stroke", "red")
         .attr("stroke-width", 0)
         .attr("fill", "none");
 
-      const totalLengthh = markerPath.node().getTotalLength();
+      const totalLength = markerPath.node().getTotalLength();
       const startPointLong = markerDataSet[0][0];
       const startPointLat = markerDataSet[0][1];
+
       const movingMarker = g
+        .attr("id", "marker-map")
         .append("circle")
         .data(markerDataSet)
         .join("circle")
-        .classed("doKeep", true)
         .attr("cx", ([x, y]) => x)
         .attr("cy", ([x, y]) => y)
-        .attr("r", 0.3)
+        .attr("r", MARKER_POINT_RADIUS)
         .attr("fill", "rgb(197, 34, 31)")
         .attr("fill-opacity", "1")
         .attr("stroke", "white")
-        .attr("stroke-width", ".08px");
+        .attr("stroke-width", MARKER_POINT_STROKE_WIDTH);
 
       movingMarker
         .transition()
-        .duration(totalLengthh * 80)
+        .duration(totalLength * 80)
         .attrTween("transform", function () {
           return function (t) {
-            const p = markerPath.node().getPointAtLength(t * totalLengthh);
-
+            const p = markerPath.node().getPointAtLength(t * totalLength);
             return (
               "translate(" +
               (p.x - startPointLong) +
@@ -218,34 +246,6 @@ function WorldMap() {
     const lowY = Math.floor(gBounds[0][1]);
     const highY = Math.floor(gBounds[1][1]);
 
-    function zoomOnLoad(countryCoords) {
-      const [[x0, y0], [x1, y1]] = path.bounds(countryCoords);
-
-      let zoomedCountry = countries._groups[0].filter((x) => {
-        return x.__data__.properties.name === drawnCountry;
-      });
-      ///#E1BB80 , ecru , #C5221F red , rgb(191 169 107) yellow
-      d3.select(zoomedCountry[0]).transition().style("fill", "rgb(232 83 80)");
-
-      svg
-        .transition()
-        .duration(750)
-        .call(
-          zoom.transform,
-          d3.zoomIdentity
-            .translate(width / 2, height / 2)
-            .scale(
-              Math.min(
-                28,
-                0.9 / Math.max((x1 - x0) / width, (y1 - y0) / height)
-              )
-            )
-            .translate(-(x0 + x1) / 2, -(y0 + y1) / 2)
-        );
-    }
-
-    zoomOnLoad(countryCoords);
-
     const amountOfCountryElems = countryCoords.geometry.coordinates.length;
 
     for (let index = 0; index < 50; index++) {
@@ -279,13 +279,13 @@ function WorldMap() {
         return;
       }
     }
-
-    function getRandomInRange(from, to) {
-      return (Math.random() * (to - from) + from).toFixed(4);
-    }
   }, []);
 
   return <div id="map" />;
 }
 
 export default WorldMap;
+
+function getRandomInRange(from, to) {
+  return (Math.random() * (to - from) + from).toFixed(4);
+}

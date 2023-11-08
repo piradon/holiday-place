@@ -68,12 +68,12 @@
   font-family: Trebuchet MS;
   font-size: 18px;
   font-weight: 800;
-  text-decoration: none;
   padding: 14px 15px;
-  border: 0px solid #000;
   border-radius: 10px;
-  justify-content: center;
   cursor: pointer;
+  width: 200px;
+  margin-top: 125px;
+  border: 2px solid white;
 }
 .my-button span {
   margin-right: 15px;
@@ -115,3 +115,7 @@
     margin-left: -5758px;
   }
 }
+/* 
+.flag {
+  mask-image: linear-gradient(rgba(0, 0, 0, 1), transparent);
+} */

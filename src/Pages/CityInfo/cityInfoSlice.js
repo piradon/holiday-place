@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import Nominatim from "nominatim-geocoder";
 import wiki from "wikijs";
-const OPEN_WEATHER_KEY = "a5f41a2b2831c27a023da0a5de4d1907";
 
 const geocoder = new Nominatim();
 
@@ -21,12 +20,10 @@ export const getCityWeather = createAsyncThunk(
   "drawnCity/getCityWeather",
   async ({ lat, lon }) => {
     let response = await fetch(
-      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${OPEN_WEATHER_KEY}&units=metric`
+      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${process.env.REACT_APP_OPEN_WEATHER_KEY}&units=metric`
     );
     if (response.ok) {
-      console.log("WEATHER");
       let json = await response.json();
-      console.log(JSON.stringify(json, null, 2));
       return json;
     } else {
       alert("HTTP-Error: " + response.status);
@@ -74,7 +71,6 @@ export const getWikiImage = createAsyncThunk(
       .page(drawnCity)
       .then((page) => page.mainImage())
       .then((image) => {
-        console.log(image);
         return image;
       });
 
@@ -129,7 +125,6 @@ const cityInfoSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(getSummary.fulfilled, (state, action) => {
-      console.log(state, action);
       state.isLoading = false;
       state.summary = action.payload;
     });

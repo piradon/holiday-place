@@ -44,6 +44,7 @@ const Carousel = () => {
           {listFlag.map((x, i) => (
             <div style={{ padding: "20px" }}>
               <img
+                className="flag"
                 src={`https://hatscripts.github.io/circle-flags/flags/${x.cd}.svg`}
                 width="200"
                 alt="flag"
@@ -55,11 +56,7 @@ const Carousel = () => {
         <div className="draw-indicator" />
         <div className="carousel-blur" />
       </div>
-      <button
-        style={{ width: "200px", marginTop: "125px" }}
-        onClick={handleToggleClicked}
-        className="my-button"
-      >
+      <button onClick={handleToggleClicked} className="my-button">
         Draw Country!
       </button>
     </div>

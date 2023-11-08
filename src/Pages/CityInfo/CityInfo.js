@@ -48,7 +48,13 @@ const CityInfo = () => {
               alt="flag"
               className="city-img"
               style={
-                isImageLoaded &&
+                (isImageLoaded &&
+                  wikiImage !==
+                    "https://upload.wikimedia.org/wikipedia/en/5/5f/Disambig_gray.svg") ||
+                wikiImage !==
+                  "https://upload.wikimedia.org/wikipedia/en/8/8a/OOjs_UI_icon_edit-ltr-progressive.svg" ||
+                wikiImage !==
+                  "https://upload.wikimedia.org/wikipedia/en/5/5f/Disambig_gray.svg" ||
                 wikiImage !==
                   "https://upload.wikimedia.org/wikipedia/en/5/5f/Disambig_gray.svg"
                   ? {}
@@ -64,7 +70,7 @@ const CityInfo = () => {
           <div className="summary-wrapper">
             <h1 className="city-info-hdr">{drawnCity}</h1>
             <hr className="city-info-ur" />
-            {<div className="summary-container">{summary}</div>}
+            <div className="summary-container">{summary}</div>
           </div>
         )}
         {isImageLoaded && wikiImage && drawnCity && <CityClimate />}
