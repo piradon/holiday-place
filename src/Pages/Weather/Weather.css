@@ -1,12 +1,12 @@
-.box {
+.weather-container {
   display: flex;
-  flex-direction: column;
+  color: white;
+  flex-direction: row;
   justify-content: center;
-  padding: calc(1vw);
   animation: fadeIn 0.8s;
-  max-width: 200px;
-  min-width: 200px;
-  border: 1px solid violet;
+  margin: 0 auto;
+  margin-top: 40px;
+  width: 250px;
 }
 
 .weather-info {
@@ -14,6 +14,10 @@
   justify-content: center;
   flex-direction: column;
   text-align: center;
+  max-width: 140px;
+  min-width: 140px;
+  margin-top: -8px;
+  font-size: 16px;
 }
 
 @keyframes fadeIn {

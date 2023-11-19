@@ -1,30 +1,20 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { setDrawnCountry } from "../CityInfo/cityInfoSlice";
+import React, { useState } from "react";
 import { listFlag } from "../../constants/countries";
+import { goCityInfo } from "../CityInfo/cityInfoSlice";
+import { useDispatch } from "react-redux";
 import "./Carousel.css";
 
 const Carousel = () => {
-  const [countries, setCountries] = useState(null);
-  const [isMounted, setIsMounted] = useState(true);
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    const countries = listFlag.sort((a, b) => 0.5 - Math.random()).slice(0, 29);
-    setCountries(countries);
-  }, [dispatch]);
+  const [isMounted, setIsMounted] = useState(true);
 
   const onDrawend = () => {
-    dispatch(setDrawnCountry(countries[26].n));
+    dispatch(goCityInfo());
   };
 
   const handleToggleClicked = () => {
     setIsMounted(!isMounted);
   };
-
-  if (!countries) {
-    return <div>LOADER</div>;
-  }
 
   return (
     <div
@@ -39,7 +29,7 @@ const Carousel = () => {
     >
       <div className="carousel" onAnimationEnd={onDrawend}>
         <div
-          className={`carousel-slides ${isMounted ? "" : "unmounted-style"}`}
+          className={`carousel-slides ${isMounted ? "" : "unmounted-carousel"}`}
         >
           {listFlag.map((x, i) => (
             <div style={{ padding: "20px" }}>
@@ -54,9 +44,8 @@ const Carousel = () => {
           ))}
         </div>
         <div className="draw-indicator" />
-        <div className="carousel-blur" />
       </div>
-      <button onClick={handleToggleClicked} className="my-button">
+      <button onClick={handleToggleClicked} className="draw-btn">
         Draw Country!
       </button>
     </div>

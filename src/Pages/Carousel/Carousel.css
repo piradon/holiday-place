@@ -25,30 +25,6 @@
   text-align: center;
 }
 
-.heart {
-  position: relative;
-  width: 100px;
-  height: 90px;
-}
-.heart:before,
-.heart:after {
-  position: absolute;
-  content: "";
-  left: 50px;
-  top: 15px;
-  width: 50px;
-  height: 80px;
-  background: #f44a4a;
-  border-radius: 50px 50px 0 0;
-  transform: rotate(-45deg);
-  transform-origin: 0 100%;
-}
-.heart:after {
-  left: 0;
-  transform: rotate(45deg);
-  transform-origin: 100% 100%;
-}
-
 .flag-caption {
   border: 1px solid black;
   display: flex;
@@ -62,7 +38,7 @@
   text-align: center;
 }
 
-.my-button {
+.draw-btn {
   background: linear-gradient(to right, #196bca, #6433e0);
   color: #fff;
   font-family: Trebuchet MS;
@@ -75,7 +51,7 @@
   margin-top: 125px;
   border: 2px solid white;
 }
-.my-button span {
+.draw-btn span {
   margin-right: 15px;
   display: block;
   width: 29px;
@@ -85,11 +61,11 @@
   background-size: contain;
   transform: rotate(0deg);
 }
-.my-button:hover {
+.draw-btn:hover {
   background: linear-gradient(to right, #5482d0, #7d5ee3);
   background-color: #5482d0;
 }
-.my-button:active {
+.draw-btn:active {
   transform: scale(0.95);
 }
 
@@ -102,7 +78,7 @@
   border-right: 1px solid rgb(255 255 255 / 34%);
 }
 
-.unmounted-style {
+.unmounted-carousel {
   margin-left: -5759px;
   animation: slide-in 6s cubic-bezier(0, 0.11, 0.33, 1) 0s;
 }
@@ -115,7 +91,3 @@
     margin-left: -5758px;
   }
 }
-/* 
-.flag {
-  mask-image: linear-gradient(rgba(0, 0, 0, 1), transparent);
-} */

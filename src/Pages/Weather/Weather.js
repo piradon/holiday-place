@@ -7,43 +7,41 @@ import { ReactComponent as Drizzle } from "../../icons/drizzle.svg";
 import { ReactComponent as Snow } from "../../icons/snow.svg";
 import { ReactComponent as Cloud } from "../../icons/cloud.svg";
 import { ReactComponent as Overcast } from "../../icons/overcast.svg";
-
+import { ReactComponent as Fog } from "../../icons/fog.svg";
 import "./Weather.css";
 
 function CityClimate() {
-  const weather = useSelector((state) => state.cityInfo.weather);
+  const currentWeather = useSelector((state) => state.weather.currentWeather);
 
-  if (Object.keys(weather).length !== 0) {
+  const { temp, icon, windSpeed, humidity, description } = currentWeather;
+
+  if (Object.keys(currentWeather).length !== 0) {
     return (
-      <div className="box">
-        {weather.icon === "01n" || weather.icon === "01d" ? (
-          <ClearSky />
-        ) : weather.icon === "10n" ? (
+      <div className="weather-container">
+        {icon === "01n" || icon === "01d" ? (
+          <ClearSky width="24px" />
+        ) : icon === "10n" ? (
           <Rain />
-        ) : weather.icon === "11n" || weather.icon === "10d" ? (
+        ) : icon === "11n" || icon === "10d" ? (
           <Thunderstorm />
-        ) : weather.icon === "09n" ? (
+        ) : icon === "09n" ? (
           <Drizzle />
-        ) : weather.icon === "13n" ? (
+        ) : icon === "13n" ? (
           <Snow />
-        ) : weather.icon === "03n" ||
-          weather.icon === "02n" ||
-          weather.icon === "02d" ? (
+        ) : icon === "03n" || icon === "02n" || icon === "02d" ? (
           <Cloud />
-        ) : weather.icon === "04n" ||
-          weather.icon === "04d" ||
-          weather.icon === "03d" ? (
+        ) : icon === "04n" || icon === "04d" || icon === "03d" ? (
           <Overcast />
+        ) : icon === "50n" || icon === "50d" ? (
+          <Fog />
         ) : (
           <></>
         )}
         <div className="weather-info">
-          <div style={{ fontSize: 18, marginBottom: 6, marginTop: -12 }}>
-            {weather.temp} °C
-          </div>
-          <div>{weather.windSpeed} m/s</div>
-          <div>{weather.humidity} %</div>
-          <div>{weather.description}</div>
+          <div style={{ fontSize: 18 }}>{temp} °C</div>
+          <div>{windSpeed} m/s</div>
+          <div>{humidity} %</div>
+          <div>{description}</div>
         </div>
       </div>
     );

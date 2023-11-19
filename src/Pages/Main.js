@@ -1,12 +1,12 @@
 import React from "react";
-import Carousel from "./Carousel/Carousel";
+import CarouselContainer from "./Carousel/CarouselContainer";
 import CityInfo from "./CityInfo/CityInfo";
 import { useSelector } from "react-redux";
 
 function Main() {
-  const drawnCountry = useSelector((state) => state.cityInfo.drawnCountry);
+  const inCarousel = useSelector((state) => state.cityInfo.inCarousel);
 
-  return <>{drawnCountry ? <CityInfo /> : <Carousel />}</>;
+  return <>{inCarousel ? <CarouselContainer /> : <CityInfo />}</>;
 }
 
 export default Main;

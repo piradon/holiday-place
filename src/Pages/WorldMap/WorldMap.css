@@ -1,3 +1,9 @@
+#map {
+  max-height: 100%;
+  display: inline;
+  min-height: 400px;
+}
+
 .country-label {
   font-family: "Helvetica";
   font-size: 0.45px;

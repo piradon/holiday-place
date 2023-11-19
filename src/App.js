@@ -7,7 +7,7 @@ import "./App.css";
 function App() {
   return (
     <Provider store={store}>
-      <div className="wrapper">
+      <div className="app-wrapper">
         <Main />
       </div>
     </Provider>

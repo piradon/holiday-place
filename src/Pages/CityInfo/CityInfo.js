@@ -1,82 +1,73 @@
-import React, { useEffect, useState } from "react";
-import WorldMap from "../WorldMap/WorldMap";
+import React from "react";
 import CityClimate from "../Weather/Weather";
-import { getCityWeather } from "./cityInfoSlice";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import "./CityInfo.css";
 
 const CityInfo = () => {
-  const summary = useSelector((state) => state.cityInfo.summary);
-  const wikiImage = useSelector((state) => state.cityInfo.wikiImage);
+  const citySummary = useSelector((state) => state.cityInfo.citySummary);
+  const cityImage = useSelector((state) => state.cityInfo.cityImage);
   const drawnCity = useSelector((state) => state.cityInfo.drawnCity);
-  const drawnCityCoords = useSelector(
-    (state) => state.cityInfo.drawnCityCoords
-  );
+  const drawnCountry = useSelector((state) => state.cityInfo.drawnCountry);
+  const cityPopulation = useSelector((state) => state.cityInfo.cityPopulation);
+  const currentWeather = useSelector((state) => state.weather.currentWeather);
 
-  const [isImageLoaded, setImageLoaded] = useState(false);
+  if (citySummary && cityImage && drawnCity) {
+    return (
+      <>
+        <div
+          style={{
+            backgroundSize: "cover",
+            backgroundImage: `url(${cityImage})`,
+            minHeight: "100%",
+            backgroundPosition: "center",
+          }}
+        />
 
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (drawnCityCoords) {
-      dispatch(
-        getCityWeather({
-          lat: drawnCityCoords.lat,
-          lon: drawnCityCoords.lon,
-        })
-      );
-    }
-  }, [drawnCityCoords, dispatch]);
-
-  return (
-    <div className="city-container">
-      <div
-        className="city-info-wrapper"
-        style={{
-          alignItems: summary ? "start" : "",
-          minHeigth: summary ? "100vh" : "",
-          height: summary ? "" : "100%",
-          gap: summary ? "5%" : "",
-        }}
-      >
-        <div style={{ width: summary ? "400px" : "" }}>
-          <WorldMap />
-          {wikiImage && (
-            <img
-              src={wikiImage}
-              width="400"
-              alt="flag"
-              className="city-img"
-              style={
-                (isImageLoaded &&
-                  wikiImage !==
-                    "https://upload.wikimedia.org/wikipedia/en/5/5f/Disambig_gray.svg") ||
-                wikiImage !==
-                  "https://upload.wikimedia.org/wikipedia/en/8/8a/OOjs_UI_icon_edit-ltr-progressive.svg" ||
-                wikiImage !==
-                  "https://upload.wikimedia.org/wikipedia/en/5/5f/Disambig_gray.svg" ||
-                wikiImage !==
-                  "https://upload.wikimedia.org/wikipedia/en/5/5f/Disambig_gray.svg"
-                  ? {}
-                  : { display: "none" }
-              }
-              onLoad={() => {
-                setImageLoaded(true);
+        <div className="sidebar-container">
+          <div className="sidebar">
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
               }}
-            />
-          )}
-        </div>
-        {summary !== null && (
-          <div className="summary-wrapper">
-            <h1 className="city-info-hdr">{drawnCity}</h1>
-            <hr className="city-info-ur" />
-            <div className="summary-container">{summary}</div>
+            >
+              <h1>{drawnCity}</h1>
+              <img
+                src={`https://hatscripts.github.io/circle-flags/flags/${drawnCountry.cd}.svg`}
+                width="75"
+                alt="flag"
+              />
+            </div>
+            {cityPopulation && (
+              <p style={{ marginTop: "-8px" }}>Population: {cityPopulation}</p>
+            )}
+
+            {citySummary.map((x, i) => {
+              if (i < 5 && x.content !== "") {
+                return (
+                  <div style={{ marginTop: "20px" }}>
+                    <h4>{x.title}</h4>
+                    <p>{x.content.split(".")[0]}.</p>
+                  </div>
+                );
+              }
+              return <></>;
+            })}
+            {citySummary.primaryAirport && (
+              <p>PrimaryAirport: {citySummary.primaryAirport}</p>
+            )}
+            {currentWeather && <CityClimate />}
+            {citySummary.website && (
+              <p>PrimaryAirport: {citySummary.website}</p>
+            )}
           </div>
-        )}
-        {isImageLoaded && wikiImage && drawnCity && <CityClimate />}
-      </div>
-    </div>
-  );
+        </div>
+        <div className="sidebar-pattern" />
+      </>
+    );
+  }
+  return <></>;
 };
 
 export default CityInfo;
