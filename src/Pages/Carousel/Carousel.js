@@ -1,19 +1,42 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import {
+  getListOfCities,
+  getCityImage,
+  setDrawnCountry,
+  getCitySummary,
+} from "../CityInfo/cityInfoSlice";
+import { getWeather } from "../Weather/weatherSlice";
 import { listFlag } from "../../constants/countries";
 import { goCityInfo } from "../CityInfo/cityInfoSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import "./Carousel.css";
 
 const Carousel = () => {
   const dispatch = useDispatch();
+  const drawnCity = useSelector((state) => state.cityInfo.drawnCity);
+  const cityCoordinates = useSelector(
+    (state) => state.cityInfo.cityCoordinates
+  );
   const [isMounted, setIsMounted] = useState(true);
+
+  useEffect(() => {
+    const countries = listFlag.sort((a, b) => 0.5 - Math.random()).slice(0, 29);
+    dispatch(getListOfCities(countries[26].n));
+    dispatch(setDrawnCountry(countries[26]));
+  }, [dispatch]);
+
+  const handleToggleClicked = () => {
+    dispatch(getCityImage(drawnCity));
+    dispatch(getCitySummary(drawnCity));
+    getWeather({
+      lat: cityCoordinates.latitude,
+      lon: cityCoordinates.longitude,
+    });
+    setIsMounted(!isMounted);
+  };
 
   const onDrawend = () => {
     dispatch(goCityInfo());
-  };
-
-  const handleToggleClicked = () => {
-    setIsMounted(!isMounted);
   };
 
   return (
