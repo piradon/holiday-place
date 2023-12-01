@@ -1,9 +1,12 @@
 import React from "react";
 import CityClimate from "../Weather/Weather";
-import { useSelector } from "react-redux";
+import { resetAll } from "./cityInfoSlice";
+import { useDispatch, useSelector } from "react-redux";
 import "./CityInfo.css";
 
 const CityInfo = () => {
+  const dispatch = useDispatch();
+
   const citySummary = useSelector((state) => state.cityInfo.citySummary);
   const cityImage = useSelector((state) => state.cityInfo.cityImage);
   const drawnCity = useSelector((state) => state.cityInfo.drawnCity);
@@ -54,13 +57,10 @@ const CityInfo = () => {
               }
               return <></>;
             })}
-            {citySummary.primaryAirport && (
-              <p>PrimaryAirport: {citySummary.primaryAirport}</p>
-            )}
             {currentWeather && <CityClimate />}
-            {citySummary.website && (
-              <p>PrimaryAirport: {citySummary.website}</p>
-            )}
+          <button className="draw-btn" onClick={() => dispatch(resetAll())}>
+            Try Again!
+          </button>
           </div>
         </div>
         <div className="sidebar-pattern" />

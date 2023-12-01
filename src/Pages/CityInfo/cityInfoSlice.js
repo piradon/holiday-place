@@ -119,6 +119,9 @@ const cityInfoSlice = createSlice({
       state.inCarousel = false;
       state.inCityInfo = true;
     },
+    resetAll: () => {
+      return initialState;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getDrawnCityName.pending, (state, action) => {});
@@ -157,6 +160,7 @@ export const {
   setDrawnCity,
   setDrawnCityCoords,
   goCityInfo,
+  resetAll,
 } = cityInfoSlice.actions;
 
 export default cityInfoSlice.reducer;

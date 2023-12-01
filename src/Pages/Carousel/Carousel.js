@@ -17,6 +17,7 @@ const Carousel = () => {
   const cityCoordinates = useSelector(
     (state) => state.cityInfo.cityCoordinates
   );
+  const drawnCountry = useSelector((state) => state.cityInfo.drawnCountry);
   const [isMounted, setIsMounted] = useState(true);
 
   useEffect(() => {
@@ -40,38 +41,44 @@ const Carousel = () => {
   };
 
   return (
-    <div
-      style={{
-        height: "100%",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "black",
-      }}
-    >
-      <div className="carousel" onAnimationEnd={onDrawend}>
+    <>
+      {drawnCountry && (
         <div
-          className={`carousel-slides ${isMounted ? "" : "unmounted-carousel"}`}
+          style={{
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "black",
+          }}
         >
-          {listFlag.map((x, i) => (
-            <div style={{ padding: "20px" }}>
-              <img
-                className="flag"
-                src={`https://hatscripts.github.io/circle-flags/flags/${x.cd}.svg`}
-                width="200"
-                alt="flag"
-              />
-              <div className="flag-caption">{x.n}</div>
+          <div className="carousel" onAnimationEnd={onDrawend}>
+            <div
+              className={`carousel-slides ${
+                isMounted ? "" : "unmounted-carousel"
+              }`}
+            >
+              {listFlag.map((x, i) => (
+                <div style={{ padding: "20px" }}>
+                  <img
+                    className="flag"
+                    src={`https://hatscripts.github.io/circle-flags/flags/${x.cd}.svg`}
+                    width="200"
+                    alt="flag"
+                  />
+                  <div className="flag-caption">{x.n}</div>
+                </div>
+              ))}
             </div>
-          ))}
+            <div className="draw-indicator" />
+          </div>
+          <button onClick={handleToggleClicked} className="draw-btn">
+            Draw Country!
+          </button>
         </div>
-        <div className="draw-indicator" />
-      </div>
-      <button onClick={handleToggleClicked} className="draw-btn">
-        Draw Country!
-      </button>
-    </div>
+      )}
+    </>
   );
 };
 
