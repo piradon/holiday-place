@@ -14,3 +14,7 @@ body,
   height: 100%;
   background: black;
 }
+
+body > iframe[style*='2147483647']{
+  display: none;
+}

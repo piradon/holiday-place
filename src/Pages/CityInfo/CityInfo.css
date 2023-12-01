@@ -8,11 +8,13 @@
 }
 
 .sidebar {
-  position: absolute;
-  width: 400px;
+  display: flex;
+  flex-direction: column;
   height: 100%;
   padding: 2em;
   background: linear-gradient(to right, #5482d0, #7d5ee3);
+  justify-content: space-between;
+  overflow: auto;
 }
 
 .sidebar-pattern::before {

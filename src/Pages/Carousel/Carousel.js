@@ -75,7 +75,7 @@ const Carousel = () => {
             </div>
             <div className="draw-indicator" />
           </div>
-          <button onClick={handleToggleClicked} className="draw-btn">
+          <button onClick={handleToggleClicked} className="draw-btn reset-btn">
             Draw Country!
           </button>
         </div>

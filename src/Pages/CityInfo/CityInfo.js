@@ -28,39 +28,48 @@ const CityInfo = () => {
 
         <div className="sidebar-container">
           <div className="sidebar">
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <h1>{drawnCity}</h1>
-              <img
-                src={`https://hatscripts.github.io/circle-flags/flags/${drawnCountry.cd}.svg`}
-                width="75"
-                alt="flag"
-              />
-            </div>
-            {cityPopulation && (
-              <p style={{ marginTop: "-8px" }}>Population: {cityPopulation}</p>
-            )}
+            <div>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <h1>{drawnCity}</h1>
+                <img
+                  src={`https://hatscripts.github.io/circle-flags/flags/${drawnCountry.cd}.svg`}
+                  width="75"
+                  alt="flag"
+                />
+              </div>
+              {cityPopulation && (
+                <p style={{ marginTop: "-8px" }}>
+                  Population: {cityPopulation}
+                </p>
+              )}
 
-            {citySummary.map((x, i) => {
-              if (i < 5 && x.content !== "") {
-                return (
-                  <div style={{ marginTop: "20px" }}>
-                    <h4>{x.title}</h4>
-                    <p>{x.content.split(".")[0]}.</p>
-                  </div>
-                );
-              }
-              return <></>;
-            })}
-            {currentWeather && <CityClimate />}
-          <button className="draw-btn" onClick={() => dispatch(resetAll())}>
-            Try Again!
-          </button>
+              {citySummary.map((x, i) => {
+                if (i < 5 && x.content !== "") {
+                  return (
+                    <div style={{ marginTop: "20px" }}>
+                      <h4>{x.title}</h4>
+                      <p>{x.content.split(".")[0]}.</p>
+                    </div>
+                  );
+                }
+                return <></>;
+              })}
+              {currentWeather && <CityClimate />}
+            </div>
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <button
+                className="draw-btn reset-btn"
+                onClick={() => dispatch(resetAll())}
+              >
+                Try Again!
+              </button>
+            </div>
           </div>
         </div>
         <div className="sidebar-pattern" />

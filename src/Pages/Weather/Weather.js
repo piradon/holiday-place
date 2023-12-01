@@ -19,10 +19,10 @@ function CityClimate() {
     return (
       <div className="weather-container">
         {icon === "01n" || icon === "01d" ? (
-          <ClearSky width="24px" />
+          <ClearSky />
         ) : icon === "10n" ? (
           <Rain />
-        ) : icon === "11n" || icon === "10d" ? (
+        ) : icon === "11n" || icon === "10d" || icon === "10n" ? (
           <Thunderstorm />
         ) : icon === "09n" ? (
           <Drizzle />

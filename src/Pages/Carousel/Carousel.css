@@ -69,6 +69,10 @@
   transform: scale(0.95);
 }
 
+.reset-btn {
+  margin-top: 24px;
+}
+
 .draw-indicator {
   position: absolute;
   height: 70%;
