@@ -29,10 +29,12 @@ const Carousel = () => {
   const handleToggleClicked = () => {
     dispatch(getCityImage(drawnCity));
     dispatch(getCitySummary(drawnCity));
-    getWeather({
-      lat: cityCoordinates.latitude,
-      lon: cityCoordinates.longitude,
-    });
+    dispatch(
+      getWeather({
+        lat: cityCoordinates.latitude,
+        lon: cityCoordinates.longitude,
+      })
+    );
     setIsMounted(!isMounted);
   };
 
